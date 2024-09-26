@@ -1,0 +1,35 @@
+# MacOS
+*.DS_Store
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Gradle
+*/.gradle/
+.gradle/
+*/build/
+*/out/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+# Project files
+*.class
+*/logs/
+logs/
+*.log
+.java-version
