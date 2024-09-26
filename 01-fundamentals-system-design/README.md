@@ -69,7 +69,9 @@ Available   Downtime/y      Downtime/m      Downtime/w      Downtime/d
 
  - `Reliability` = the ability to work without failures or errors
   for a long time
- - `MTBF` (mean time between failure) - average time without failure; it is a unit of measurement of reliability.\
+ - `MTBF` (mean time between failure) - average time without failure;\
+   it is a unit of reliability measurement for recoverable systems;\
+   the more time passes between failures, the more reliable the system is.
 
 Example:
 
