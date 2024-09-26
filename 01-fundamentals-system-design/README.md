@@ -15,40 +15,41 @@ Fundamentals of system design
    client -(200 req)-> server -(100 req)-> database
 ```
  - `Data-intensive applications` = requirements for:
-   - significant storage capacity
-   - efficient data transfer rates
-   - ability to search in large amounts of data
+   - significant storage capacity;
+   - efficient data transfer rates;
+   - ability to search in large amounts of data.
  - `Compute-intensive applications` = requirements for substantial processing power
  - `Read-intensive applications` = ?
  - `Write-intensive applications` = ?
 
+---
 
 ## Properties of information systems
- - `Scalability` = the ability of the system growing: 
-   - without loss of performance and other characteristics, 
-   - without the need to change the software implementation.
- - `Scale up scalability` = adding more compute resources to an existing system (CPU, RAM, SSD)
- - `Scale out scalability` = distribute the workload across different servers
+ - `Scalability` = the ability of the system growing: \
+   without loss of performance and other characteristics, \
+   without the need to change the software implementation.
+   - scale up = adding more compute resources to an existing system (CPU, RAM, SSD);
+   - scale out = distribute the workload across different servers.
 
  - `Load parameters`
-   - requests per second (RPS)
-   - traffic (Kb/Mb/Gb/Tb per second)
-   - number of concurrent connections/users (CCU)
-   - number of daily/monthly active users (DAU/MAU)
+   - requests per second (RPS);
+   - traffic (Kb/Mb/Gb/Tb per second);
+   - number of concurrent connections/users (CCU);
+   - number of daily/monthly active users (DAU/MAU);
 
  - `Fault tolerance` = the ability of the system to continue to function correctly
    in the presence of component failures:
-   - deploying new code
-   - migrating data
-   - changing configuration files
-   - network or disk problem
-   - higher users workload
-   - accidents in the data center
+   - deploying new code;
+   - migrating data;
+   - changing configuration files;
+   - network or disk problem;
+   - higher users workload;
+   - accidents in the data center;
    - ... (others)
  - `Ensuring fault tolerance`: 
-   - redundancy at the hardware level
-   - software-level failure detection and handling
-   - predicting and preventing failure
+   - redundancy at the hardware level;
+   - software-level failure detection and handling;
+   - predicting and preventing failure.
 
  - `Availability`: users interact with the system 
    and receive the expected responses in acceptable time frame; 
@@ -65,8 +66,34 @@ Available   Downtime/y      Downtime/m      Downtime/w      Downtime/d
 99,995%  -  26,30 min    -  2,19  min    -  30,24 sec    -  4,32  sec
 99,999%  -  5,26  min    -  26,30 sec    -  6,05  sec    -  864   ms
 ```
-   - ?
 
+ - `Reliability` = the ability to work without failures or errors
+  for a long time
+ - `MTBF` (mean time between failure) - average time without failure; it is a unit of measurement of reliability.\
+
+Example:
+
+period = 24 hours\
+lost time = 2 hours\
+issue count = 2\
+MTBF = (24 - 2) / 2 = 11 hours
+
+ - `Convenience of maintenance` = requirements for:
+   - updating the system without downtime;
+   - ability switch off the part of services;
+   - availability of system monitoring and detailed logging;
+   - time between detect the problem and fix it;
+   - possibility of expanding the system.
+
+ - `Safety` = requirements for:
+   - prevention of possible threats (data leak, data falsification);
+   - protection against attacks (DDoS)
+
+---
+
+## Load balancing
+
+---
 
 ## Notes
  - defining RPS by DAU
