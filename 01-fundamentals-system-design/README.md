@@ -116,12 +116,19 @@ client ---> [LB] --> server 2 (Ok)
  - Algorithms:
     - `Random` - incoming requests are randomly assigned to servers within the pool.
     - `Round robin` - distribution of incoming requests across the server pool sequentially, \
-      starting from the first server and ending with the last (default for the most cases).
+      starting from the first server and ending with the last (<ins>default</ins> for the most cases).
     - `Weighted round robin` - each server in the pool assigns `weights` based on their capabilities, \
-      incoming requests are distributed proportionally to these weights, ensuring that more powerful servers handle a larger share of the workload.
-    - `Least Connections` - distribution of incoming requests to the server with the fewest active connections.
+      incoming requests are distributed proportionally to these weights, ensuring that more powerful servers \
+      handle a larger share of the workload (<ins>for large-scale infrastructures</ins>)
+    - `Least connections` - distribution of incoming requests to the server with the fewest active connections;\
+      the goal is to evenly distribute the workload among servers, preventing and single node from becoming overloaded.
+    - `Least response time` - when distributing incoming requests, priority is given to servers \
+      with the shortest response time and the minimum number of active connections; \
+      it enhances user experience and optimizes resource utilization.
     - `Sticky sessions` - also known as `session affinity`, requests from a specific client are always routed to the same server, \
-      it can be done, for example, using a hash index by clientID.
+      it can be done, for example, using a hash index by clientId.
+    - `Power of two choises`
+
 
  - Layers:
    - `Layer 4` operating at the `Transport Level OSI model`, using the TCP and UDP protocols, \
