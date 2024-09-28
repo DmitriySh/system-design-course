@@ -1,4 +1,4 @@
-Fundamentals of system design
+01 - Fundamentals of system design
 =======
 
 ## Criteria of information systems
@@ -94,7 +94,77 @@ MTBF = (24 - 2) / 2 = 11 hours
 ---
 
 ## Load balancing
+ - `Client balancing` = client knows the list of servers and distributes requests to them directly
+```
+         ----> server 1
+         |
+client ------> server 2
+         |
+         ----> server 3
+```
 
+ - `Server balancing` = client doesn't know the list of servers serving the request, the `LoadBalancer` server does it instead, \
+   it uses health checks to route direct traffic only to "live" servers. 
+```
+             ------> server 1 (Ok)
+             |
+client ---> [LB] --> server 2 (Ok)
+             |
+             ---X--> server 3 (Down)
+```
+
+ - Algorithms:
+    - `Random` - incoming requests are randomly assigned to servers within the pool.
+    - `Round robin` - distribution of incoming requests across the server pool sequentially, \
+      starting from the first server and ending with the last (default for the most cases).
+    - `Weighted round robin` - each server in the pool assigns `weights` based on their capabilities, \
+      incoming requests are distributed proportionally to these weights, ensuring that more powerful servers handle a larger share of the workload.
+    - `Least Connections` - distribution of incoming requests to the server with the fewest active connections.
+    - `Sticky sessions` - also known as `session affinity`, requests from a specific client are always routed to the same server, \
+      it can be done, for example, using a hash index by clientID.
+
+ - Layers:
+   - `Layer 4` operating at the `Transport Level OSI model`, using the TCP and UDP protocols, \
+     manages traffic based on network information such as application ports and protocols \
+     without visibility into the actual content of messages.\
+     Layer 4 effective approach for simple packet-level load balancing.
+   - `Layer 7` operating at the `Application Level OSI model`, using protocols such as HTTP and SMTP \
+     to make more intelligent routing decisions based on the headers, actual content of each message, URL type, and cookie data.\
+     Layer 7 can be used for the "sticky sessions" algorithm.
+
+ - `DNS balancing` = advanced technique for distributing incoming traffic across multiple servers\
+   and keeping your product running smoothly even if some of the load balancers fall
+```
+             -------> [LB1: Ok] ----------> server 1
+             |                       |
+client ---> [DNS] --> [LB2: Ok] ----------> server 2
+             |                       |
+             ---X---> [LB3: Down] --------> server 3
+```
+
+ - `geoDNS balancing` = redistributes application traffic across data centers in different locations \
+   for maximum efficiency and security based on the geographic location of the user.
+```
+client: USA       -------> [LB: USA] ----------> server 1
+  |               |            |     
+  |----------> [geoDNS]        ----------------> server 2
+  |               |                 
+client: India     -------> [LB: India] --------> server 3
+                               |
+                               ----------------> server 4
+```
+
+ - `Service discovery` =  is the act of keeping track of the list of services that are available,\
+   where those services are located on the network, and determines which servers are available and how to get to them.\
+   This information is transmitted to the load balancer to update the list of available servers
+```
+            [SD] <--- server 1 (Down)
+             |
+             ⌵
+client ---> [LB] ---> server 2 (Ok)
+             |
+             -------> server 3 (Ok)
+```
 ---
 
 ## Notes
