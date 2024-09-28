@@ -126,28 +126,31 @@ client ---> [LB] --> server 2 (Ok)
 ```
 
  - Algorithms:
-    - `Random` - incoming requests are randomly assigned to servers within the pool.
-    - `Round robin` - distribution of incoming requests across the server pool sequentially, \
+    - `Random` = incoming requests are randomly assigned to servers within the pool.
+    - `Round robin` = distribution of incoming requests across the server pool sequentially, \
       starting from the first server and ending with the last (<ins>default</ins> for the most cases).
-    - `Weighted round robin` - each server in the pool assigns `weights` based on their capabilities, \
+    - `Weighted round robin` = each server in the pool assigns `weights` based on their capabilities, \
       incoming requests are distributed proportionally to these weights, ensuring that more powerful servers \
       handle a larger share of the workload (<ins>for large-scale infrastructures</ins>)
-    - `Least connections` - distribution of incoming requests to the server with the fewest active connections;\
-      the goal is to evenly distribute the workload among servers, preventing and single node from becoming overloaded.
-    - `Least response time` - when distributing incoming requests, priority is given to servers \
+    - `Least connections` = distribution of incoming requests to the server with the fewest active connections;\
+      the goal is to evenly distribute the workload among servers, preventing and single node from becoming overloaded;\
+      (<ins>for long-lived connections</ins>)
+    - `Least response time` = when distributing incoming requests, priority is given to servers \
       with the shortest response time and the minimum number of active connections; \
       it enhances user experience and optimizes resource utilization.
-    - `Sticky sessions` - also known as `session affinity`, requests from a specific client are always routed to the same server, \
-      it can be done, for example, using a hash index by clientId.
-    - `Power of two choises`
+    - `Sticky sessions` = also known as `session affinity`, requests from a specific client are always routed to the same server, \
+      it can be done, for example, using a hash index by clientId or source and/or destination IP address; \
+      (<ins>for storing session data in server memory</ins>)
+    - `Power of two choises` = incoming requests are choose between two randomly selected servers based on `Least connections`;\
+      you don’t have to compare all servers to choose the best option each time; instead, you only need to compare two
 
 
  - Layers:
-   - `Layer 4` operating at the `Transport Level OSI model`, using the TCP and UDP protocols, \
+   - `Layer 4` = operating at the `Transport Level OSI model`, using the TCP and UDP protocols, \
      manages traffic based on network information such as application ports and protocols \
      without visibility into the actual content of messages.\
      Layer 4 effective approach for simple packet-level load balancing.
-   - `Layer 7` operating at the `Application Level OSI model`, using protocols such as HTTP and SMTP \
+   - `Layer 7` = operating at the `Application Level OSI model`, using protocols such as HTTP and SMTP \
      to make more intelligent routing decisions based on the headers, actual content of each message, URL type, and cookie data.\
      Layer 7 can be used for the "sticky sessions" algorithm.
 
