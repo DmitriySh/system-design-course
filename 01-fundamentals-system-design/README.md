@@ -14,11 +14,16 @@
 ```
    client -(200 req)-> server -(100 req)-> database
 ```
+
  - `Data-intensive applications` = requirements for:
    - significant storage capacity;
    - efficient data transfer rates;
    - ability to search in large amounts of data.
+
+
  - `Compute-intensive applications` = requirements for substantial processing power
+
+
  - `Read-intensive applications` = ?
  - `Write-intensive applications` = ?
 
@@ -31,11 +36,13 @@
    - scale up = adding more compute resources to an existing system (CPU, RAM, SSD);
    - scale out = distribute the workload across different servers.
 
+
  - `Load parameters`
    - requests per second (RPS);
    - traffic (Kb/Mb/Gb/Tb per second);
    - number of concurrent connections/users (CCU);
    - number of daily/monthly active users (DAU/MAU);
+
 
  - `Fault tolerance` = the ability of the system to continue to function correctly
    in the presence of component failures:
@@ -46,10 +53,14 @@
    - higher users workload;
    - accidents in the data center;
    - ... (others)
+
+
  - `Ensuring fault tolerance`: 
    - redundancy at the hardware level;
    - software-level failure detection and handling;
    - predicting and preventing failure.
+
+
 
  - `Availability`: users interact with the system 
    and receive the expected responses in acceptable time frame; 
@@ -66,9 +77,10 @@ Available   Downtime/y      Downtime/m      Downtime/w      Downtime/d
 99,995%  -  26,30 min    -  2,19  min    -  30,24 sec    -  4,32  sec
 99,999%  -  5,26  min    -  26,30 sec    -  6,05  sec    -  864   ms
 ```
-
  - `Reliability` = the ability to work without failures or errors
   for a long time
+
+
  - `MTBF` (mean time between failure) - average time without failure;\
    it is a unit of reliability measurement for recoverable systems;\
    the more time passes between failures, the more reliable the system is.
@@ -139,6 +151,7 @@ client ---> [LB] --> server 2 (Ok)
      to make more intelligent routing decisions based on the headers, actual content of each message, URL type, and cookie data.\
      Layer 7 can be used for the "sticky sessions" algorithm.
 
+
  - `DNS balancing` = advanced technique for distributing incoming traffic across multiple servers\
    and keeping your product running smoothly even if some of the load balancers fall
 ```
@@ -175,7 +188,7 @@ client ---> [LB] ---> server 2 (Ok)
 ---
 
 ## Notes
- - defining RPS by DAU
+ - Defining RPS by DAU
 ```
 RPS = dau * avg_requests_per_day_by_user / 86400
 ---
@@ -188,7 +201,7 @@ DAU = 10 000 000\
 avg_requests_per_day_by_user = 5\
 RPS = 10000000 * 5 / 86400 = 578
 
- - defining traffic calculation
+ - Defining traffic calculation
 ```
 Traffic = rps * avg_request_size
 ---
@@ -200,7 +213,7 @@ RPS = 10 000\
 avg_request_size = 2Kb\
 traffic = 10000 * 2 = 20 000 Kb/sec
 
- - defining concurrent connections (about 10% of the DAU)
+ - Defining concurrent connections (about 10% of the DAU)
 ```
 CCU = dau * 0.1
 ```
