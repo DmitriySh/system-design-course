@@ -233,6 +233,34 @@ client --> {internet} ---|--> [reverse proxy] ---> server 2
 
 ---
 
+## Functional/Non-functional requirements
+ - `Functional requirements` = possibilities that the system should perform to meet the needs of the user\
+Examples:
+   - user registration;
+   - authentication and authorization;
+   - multi-language support;
+   - product search and filtering;
+   - creating and editing product cards;
+   - sending notifications;
+   - integration with payment systems;
+   - creating reports.
+
+
+ - `Non-functional requirements` = properties that the system should have that are not related to it behavior of the system\
+Examples:
+   - количество обслуживаемых пользователей (100 million);
+   - number of active users (MAU=20 million, DAU=670 thousand);
+   - read/write user action ratio (10/1 => 10% write to the database => 67 thousand users);
+   - data retention period in the database (10 years);
+   - storage size for all users (document=1 mb => 232 Tb of data for 10 years);
+   - worldwide availability (geo-distributed DNS cluster);
+   - response time to the request;
+   - data security and protection;
+   - the ability of the system to cope with an increase in load;
+   - maintainability.
+
+---
+
 ## Notes
  - Defining RPS by DAU
 ```
