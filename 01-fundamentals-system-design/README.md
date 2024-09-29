@@ -106,6 +106,7 @@ MTBF = (24 - 2) / 2 = 11 hours
 ---
 
 ## Load balancing
+This is a method of distributing network traffic across a pool of servers.
  - `Client balancing` = client knows the list of servers and distributes requests to them directly
 ```
          ----> server 1
@@ -188,6 +189,48 @@ client ---> [LB] ---> server 2 (Ok)
              |
              -------> server 3 (Ok)
 ```
+
+---
+
+## Proxying
+Proxy server is a special server that sits between service 1 and service 2 for acting as an intermediary for tasks:
+ - access protection
+ - data caching
+ - traffic restriction:
+   - leaky bucket algorithm,
+   - rate limiter algorithm,
+ - data compression and modification
+ - circumventing access restrictions
+```
+server 1 --> [proxy] --> server 2
+```
+
+Types:
+ - `Forward proxy` = is an intermediary server that <ins>forwards</ins> client outbound requests to other servers:
+   - masking the client's IP address for privacy
+   - managing access to websites or services
+   - caching frequently requested content
+   - examples: Nginx, Squid
+```
+                              |
+client --> [forward proxy] ---|--> {internet} --> server
+                              |
+```
+ - `Reverse proxy` = handles incoming traffic, distributing it to one or more backend servers:
+   - load balancing client requests across multiple servers
+   - caching frequently requested content
+   - protecting servers from direct attacks from the Internet
+   - handling SSL encryption and decryption
+   - managing server updates and maintenance
+   - examples: Nginx, HAProxy, Apache, Traefik
+```
+                                     ------------> server 1
+                         |           |
+client --> {internet} ---|--> [reverse proxy] ---> server 2
+                         |           |
+                                     ------------> server 3
+```
+
 ---
 
 ## Notes
