@@ -246,17 +246,20 @@ Examples:
    - creating reports.
 
 
- - `Non-functional requirements` = properties that the system should have that are not related to it behavior of the system\
+ - `Non-functional requirements` = properties that the system should have and that are not related to it behavior of the system\
 Examples:
-   - количество обслуживаемых пользователей (100 million);
+   - number of users served (100 million);
    - number of active users (MAU=20 million, DAU=670 thousand);
-   - read/write user action ratio (10/1 => 10% write to the database => 67 thousand users);
+   - read/write ratio of user actions (10/1 => 10% write to; 90% read from the db => 67 thousand users write; 603 thousand users read);
    - data retention period in the database (10 years);
    - storage size for all users (document=1 mb => 232 Tb of data for 10 years);
    - worldwide availability (geo-distributed DNS cluster);
-   - response time to the request;
+   - seasonal customer activity (sales seasons: autumn, pre-New Year)
+   - response time to the request (<= 5 sec);
    - data security and protection;
-   - the ability of the system to cope with an increase in load;
+   - how long app could be unavailable in a year (99,9% = several hours of downtime per year)
+   - approaches for coping with increased load;
+   - convenient cycle of update and rollback for all services
    - maintainability.
 
 ---
