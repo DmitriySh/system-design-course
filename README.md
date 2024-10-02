@@ -16,6 +16,8 @@ High-load fault-tolerant systems design course:
  - definition of functional and non-functional requirements (RPS, traffic, DAU, amount of data)
  - raise your salary level and increase your impact as a specialist
 
-## Homework 1: Fundamentals of system design
+## Homework 1: [Fundamentals of system design](https://github.com/DmitriySh/system-design-course/tree/main/01-fundamentals-system-design)
 
-## Homework 2: ..
+## Homework 2: Caching, API and Observability
+
+## Homework 3: ..
