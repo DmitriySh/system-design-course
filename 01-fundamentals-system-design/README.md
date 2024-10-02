@@ -169,6 +169,18 @@ client ---> [LB] --> server 2 (Ok)
 client ---> [DNS] --> [LB2: Ok] ----------> server 2
              |                       |
              ---X---> [LB3: Down] --------> server 3
+---
+$ nslookup ya.ru
+Server:		77.88.8.8
+Address:	77.88.8.8#53
+
+Non-authoritative answer:
+Name:	ya.ru
+Address: 77.88.44.242
+Name:	ya.ru
+Address: 5.255.255.242
+Name:	ya.ru
+Address: 77.88.55.242
 ```
 
  - `geoDNS balancing` = redistributes application traffic across data centers in different locations \
