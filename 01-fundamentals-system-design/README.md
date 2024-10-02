@@ -5,9 +5,12 @@
 - `Latency` = time spent on servicing one customer
 - `Low-latency` = seamless and realtime with fast data flow
 ```
-   client -(t1)-> server -(t2)->
+   client --(t1)--> server ---(t2)---
+                                    |
+                                    ⌵
                                  database
-   client <-(t4)- server <-(t3)-
+                                    |
+   client <--(t4)-- server <--(t3)---
 ```
 - `Throughput` = the number of processed customer requests per unit of time
 - `High-throughput` = high link utilization
