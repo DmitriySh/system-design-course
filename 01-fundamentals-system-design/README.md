@@ -24,11 +24,13 @@
    - ability to search in large amounts of data.
 
 
- - `Compute-intensive applications` = requirements for substantial processing power
+ - `Compute-intensive applications` = requirements for substantial processing power (CPU)
 
 
- - `Read-intensive applications` = ?
- - `Write-intensive applications` = ?
+ - `Read-intensive applications` = applications characterized by intensive data read requests
+
+
+ - `Write-intensive applications` = applications characterized by intensive data write requests
 
 ---
 
