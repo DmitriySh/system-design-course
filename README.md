@@ -3,8 +3,7 @@ System Design Course
 
 `System Design` is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements. 
 It requires a systematic approach to building and engineering systems. \
-A good `system design` requires you to think about everything in an infrastructure, from the hardware and software, \
-down to the data and how it’s stored.
+A good `system design` requires you to think about everything in an infrastructure, from the hardware and software, down to the data and how it’s stored.
 
 ---
 
