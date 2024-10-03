@@ -6,13 +6,40 @@ Homework 01: system design for a new project
 
 
 ### Functional requirements:
- - users make a new posts with photos, small description and geolocation of travel;
+ - users make a new posts with photos, small description and geolocation spot of travel;
  - users can rate posts other travelers;
  - users can comment posts other travelers;
- - users can subscribe to other travelers;
+ - users can subscribe to other travelers (relations between influencers and followers);
+ - users from former USSR republics
  - search popular places for traveling and viewing posts about them;
  - viewing the feed of other travelers;
+ - traveler feed: 10 posts by request.
 
 
 ### Non-functional requirements:
- - b
+ - linear growth of users
+ - geo distribution is not needed
+ - user clients: web app, mobile app
+ - after the year, DAU = 10 000 000
+ - availability 99,9%
+ - search index
+
+
+ - post size: 1000Kb photos + 500Kb desc + 4byte geo spot = 1 504 Kb
+ - comment size: 150 Kb
+ - traveler feed size: 10 * 1504Kb = 15 040 Kb
+ - avg write posts per day by user: 1
+ - avg write comments/reactions per day by user: 10
+ - avg read feed per day by user: 5
+
+RPS (dau * avg_requests_per_day_by_user / 86400)
+ - RPS write posts: 10000000 * 1 / 86400 = 115
+ - RPS write comments/reactions: 10000000 * 10 / 86 400 = 1 157
+ - RPS read feed: 10000000 * 5 / 86400 = 578
+
+Traffic (rps * avg_request_size)
+ - traffic write: posts + comments = 115 * 1504Kb + 1157 * 150Kb = 346 510 Kb/sec = 346 Mb/sec
+ - traffic read: feed = 578 * 15040Kb = 8 693 120 Kb/sec = 8,6 Gb/sec
+
+Connections (dau * 0.1)
+ - open connections: * 0.1 = 1 000 000 / sec 
