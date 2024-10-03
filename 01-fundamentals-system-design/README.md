@@ -1,7 +1,7 @@
-Homework 01: system design for a new project
+Homework 01: functional/non-functional requirements
 =======
 
-## Social network for travelers
+## System design "Social network for travelers"
 ![image](https://github.com/user-attachments/assets/2712c495-7088-4746-a2e3-df7fb2bdcffc)
 
 
