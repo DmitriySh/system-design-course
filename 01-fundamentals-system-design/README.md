@@ -41,5 +41,5 @@ Traffic (rps * avg_request_size)
  - traffic write: posts + comments = 115 * 1504Kb + 1157 * 150Kb = 346 510 Kb/sec = 346 Mb/sec
  - traffic read: feed = 578 * 15040Kb = 8 693 120 Kb/sec = 8,6 Gb/sec
 
-Connections (dau * 0.1)
- - open connections: * 0.1 = 1 000 000 / sec 
+CCU (dau * 0.1)
+ - connections: * 0.1 = 1 000 000 / sec 
