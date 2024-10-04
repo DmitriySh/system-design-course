@@ -22,7 +22,6 @@ Homework 01: functional/non-functional requirements
  - user clients: web app, mobile app
  - after the year, DAU = 10 000 000
  - availability 99,9%
- - search index
 
 
  - post size: 1000Kb photos + 500Kb desc + 4byte geo spot = 1 504 Kb
