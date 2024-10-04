@@ -12,8 +12,7 @@ Homework 01: functional/non-functional requirements
  - users can subscribe to other travelers (relations between influencers and followers);
  - users from former USSR republics
  - search popular places for traveling and viewing posts about them;
- - viewing the feed of other travelers;
- - traveler feed: 10 posts by request.
+ - viewing the feed of other travelers.
 
 
 ### Non-functional requirements:
@@ -22,6 +21,7 @@ Homework 01: functional/non-functional requirements
  - user clients: web app, mobile app
  - after the year, DAU = 10 000 000
  - availability 99,9%
+ - traveler feed: 10 posts by request
 
 
  - post size: 1000Kb photos + 4Kb desc + 4byte geo spot = 1 004 Kb
