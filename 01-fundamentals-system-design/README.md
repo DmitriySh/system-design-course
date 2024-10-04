@@ -31,7 +31,7 @@ Homework 01: functional/non-functional requirements
    - photo size: 200Kb
    - post size: 1000Kb photos + 4Kb desc + 4byte geo spot = 1 004 Kb
    - comment size: 1 Kb
-   - reaction size: 4 byte
+   - reaction size: 4 byte = 0,004 Kb
    - traveler feed size: 10 * 1004Kb = 10 040 Kb
 
 
@@ -53,14 +53,16 @@ Homework 01: functional/non-functional requirements
    - RPS write reactions: 10000000 * 20 / 86400 = 2 314
    - RPS write photos: 10000000 * 5 / 86400 = 578
    - RPS read feed's posts: 10000000 * 30 / 86400 = 3 472
-   - RPS read comments: ?
-   - RPS read reactions: ?
-   - RPS read photos: ?
+   - RPS read comments: 10000000 * 900 / 86400 = 104 166
+   - RPS read reactions: 10000000 * 900 / 86400 = 104 166
+   - RPS read photos: 10000000 * 150 / 86400 = 17 361
 
 
  - Traffic (rps * avg_request_size):
-   - traffic write: posts + comments = 115 * 1004Kb + 1157 * 1Kb = 116 617 Kb/sec = 116 Mb/sec
-   - traffic read: feed = 10 * post = 578 * 10040Kb = 5 803 120 Kb/sec = 5,8 Gb/sec
+   - traffic write all text: posts + comments + reactions = 115 * 1004Kb + 1157 * 1Kb + 2314 * 0,004Kb = 116 626 Kb/sec = 117 Mb/sec
+   - traffic write photos: 578 * 200Kb = 115 600 Kb/sec = 116 Mb/sec
+   - traffic read all text: posts + comments + reactions = 3472 * 1004Kb + 104166 * 1Kb + 104166 * 0,004Kb = 3 590 470 Kb/sec = 3,6 Gb/sec
+   - traffic read photos: 17361 * 200Kb = 3 472 200 Kb/sec = 3,5 Gb/sec
 
 
  - CCU (dau * 0.1)
