@@ -25,13 +25,16 @@ Homework 01: functional/non-functional requirements
  - CPU, RAM, Storage peak load redundancy: +50%
  - services: reliable, scalable and fault tolerance
  - look for most popular places by reactions in travel posts
- - traveler feed's posts: 10
- - photos per post: 5
- - reactions per post: 30
- - comments per post: 30
 
 
-- Timings:
+ - Limits:
+   - traveler feed's posts: 10
+   - photos per post: 5
+   - reactions per post: 30
+   - comments per post: 30
+
+
+ - Timings:
    - publish post with photos: 1 seconds
    - publish comment: 0,5 seconds
    - publish reaction: 0,5 seconds
