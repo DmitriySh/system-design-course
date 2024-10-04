@@ -41,4 +41,4 @@ Traffic (rps * avg_request_size)
  - traffic read: feed = 578 * 15040Kb = 8 693 120 Kb/sec = 8,6 Gb/sec
 
 CCU (dau * 0.1)
- - connections: * 0.1 = 1 000 000 / sec 
+ - connections: * 0.1 = 1 000 000 
