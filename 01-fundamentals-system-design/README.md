@@ -22,6 +22,7 @@ Homework 01: functional/non-functional requirements
  - DAU: 10 000 000 (after the year)
  - availability: 99,9%
  - all requested should be averaged over the year
+ - CPU, RAM, Storage peak load redundancy: +50%
  - services: reliable, scalable and fault tolerance
  - look for most popular places by reactions in travel posts
  - traveler feed's posts: 10
