@@ -21,6 +21,8 @@ Homework 01: functional/non-functional requirements
  - user clients: web app, mobile app
  - after the year, DAU = 10 000 000
  - availability 99,9%
+ - all requested should be averaged over the year
+ - services: reliable, scalable and fault tolerance
  - traveler feed's posts: 10
  - photos per post: 5
  - reactions per post: 30
