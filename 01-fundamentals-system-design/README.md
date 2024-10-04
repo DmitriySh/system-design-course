@@ -19,8 +19,8 @@ Homework 01: functional/non-functional requirements
  - linear growth of users for several years in a row (> 2 years)
  - geo distribution is not needed
  - user clients: web app, mobile app
- - after the year, DAU = 10 000 000
- - availability 99,9%
+ - DAU: 10 000 000 (after the year)
+ - availability: 99,9%
  - all requested should be averaged over the year
  - services: reliable, scalable and fault tolerance
  - look for most popular places by reactions in travel posts
@@ -28,6 +28,15 @@ Homework 01: functional/non-functional requirements
  - photos per post: 5
  - reactions per post: 30
  - comments per post: 30
+
+
+- Timings:
+   - publish post with photos: 1 seconds
+   - publish comment: 0,5 seconds
+   - publish reaction: 0,5 seconds
+   - view post with photos and reactions: 2 seconds
+   - view feed: 2 seconds
+   - view post's comments and reactions: 1 seconds
 
 
  - Size:
