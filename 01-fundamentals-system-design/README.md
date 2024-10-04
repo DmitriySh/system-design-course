@@ -35,12 +35,13 @@ Homework 01: functional/non-functional requirements
 
 
  - Timings:
-   - publish post with photos: 1 seconds
-   - publish comment: 0,1 seconds
-   - publish reaction: 0,1 seconds
-   - view post with photos and reactions: 2 seconds
+   - publish post with photos: 1 sec
+   - publish comment: 0,1 sec
+   - publish reaction: 0,1 sec
+   - view post with photos and reactions: 2 sec
    - view feed: 2 seconds
-   - view post's comments and reactions: 1 seconds
+   - view post's comments and reactions: 1 sec
+   - view most popular posts by reactions: 5 sec
 
 
  - Size:
