@@ -28,12 +28,14 @@ Homework 01: functional/non-functional requirements
  - comment size: 1 Kb
  - traveler feed size: 10 * 1004Kb = 10 040 Kb
  - avg write posts per day by user: 1
- - avg write comments/reactions per day by user: 10
+ - avg write comments per day by user: 10
+ - avg write reactions per day by user: 30
  - avg read feed per day by user: 5
 
 RPS (dau * avg_requests_per_day_by_user / 86400)
  - RPS write posts: 10000000 * 1 / 86400 = 115
- - RPS write comments/reactions: 10000000 * 10 / 86 400 = 1 157
+ - RPS write comments: 10000000 * 10 / 86 400 = 1 157
+ - RPS write reactions: 10000000 * 30 / 86 400 = 3 472
  - RPS read feed: 10000000 * 5 / 86400 = 578
 
 Traffic (rps * avg_request_size)
