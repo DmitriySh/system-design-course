@@ -10,12 +10,12 @@ Homework 01: functional/non-functional requirements
  - users can rate posts other travelers;
  - users can comment posts other travelers;
  - users can subscribe to other travelers (relations between influencers and followers);
- - users from former USSR republics
  - search popular places for traveling and viewing posts about them;
  - viewing the feed of other travelers.
 
 
 ### Non-functional requirements:
+ - users from former USSR republics
  - linear growth of users for several years in a row (> 2 years)
  - geo distribution is not needed
  - user clients: web app, mobile app
