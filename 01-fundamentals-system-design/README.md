@@ -21,26 +21,47 @@ Homework 01: functional/non-functional requirements
  - user clients: web app, mobile app
  - after the year, DAU = 10 000 000
  - availability 99,9%
- - traveler feed: 10 posts by request
+ - traveler feed's posts: 10
+ - photos per post: 5
+ - reactions per post: 30
+ - comments per post: 30
 
 
- - post size: 1000Kb photos + 4Kb desc + 4byte geo spot = 1 004 Kb
- - comment size: 1 Kb
- - traveler feed size: 10 * 1004Kb = 10 040 Kb
- - avg write posts per day by user: 1
- - avg write comments per day by user: 10
- - avg write reactions per day by user: 30
- - avg read feed per day by user: 5
+ - Size:
+   - photo size: 200Kb
+   - post size: 1000Kb photos + 4Kb desc + 4byte geo spot = 1 004 Kb
+   - comment size: 1 Kb
+   - reaction size: 4 byte
+   - traveler feed size: 10 * 1004Kb = 10 040 Kb
 
-RPS (dau * avg_requests_per_day_by_user / 86400)
- - RPS write posts: 10000000 * 1 / 86400 = 115
- - RPS write comments: 10000000 * 10 / 86 400 = 1 157
- - RPS write reactions: 10000000 * 30 / 86 400 = 3 472
- - RPS read feed: 10000000 * 5 / 86400 = 578
 
-Traffic (rps * avg_request_size)
- - traffic write: posts + comments = 115 * 1004Kb + 1157 * 1Kb = 116 617 Kb/sec = 116 Mb/sec
- - traffic read: feed = 10 * post = 578 * 10040Kb = 5 803 120 Kb/sec = 5,8 Gb/sec
+ - Avg requests:
+   - avg write posts per day by user: 1
+   - avg write comments per day by user: 10
+   - avg write reactions per day by user: 20
+   - avg write photos per day by user: 1 * 5 = 5
+   - avg read feed per day by user: 3
+   - avg read feed's posts per day by user: 3 * 10 = 30
+   - avg read comments of posts per day by user: 30 * 30 = 900
+   - avg read reactions per day by user: 30 * 30 = 900
+   - avg read photos per day by user: 30 * 5 = 150
 
-CCU (dau * 0.1)
- - connections: * 0.1 = 1 000 000 
+
+ - RPS (dau * avg_requests_per_day_by_user / 86400):
+   - RPS write posts: 10000000 * 1 / 86400 = 115
+   - RPS write comments: 10000000 * 10 / 86400 = 1 157
+   - RPS write reactions: 10000000 * 20 / 86400 = 2 314
+   - RPS write photos: 10000000 * 5 / 86400 = 578
+   - RPS read feed's posts: 10000000 * 30 / 86400 = 3 472
+   - RPS read comments: ?
+   - RPS read reactions: ?
+   - RPS read photos: ?
+
+
+ - Traffic (rps * avg_request_size):
+   - traffic write: posts + comments = 115 * 1004Kb + 1157 * 1Kb = 116 617 Kb/sec = 116 Mb/sec
+   - traffic read: feed = 10 * post = 578 * 10040Kb = 5 803 120 Kb/sec = 5,8 Gb/sec
+
+
+ - CCU (dau * 0.1)
+   - connections: * 0.1 = 1 000 000 
