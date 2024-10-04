@@ -17,7 +17,7 @@ Homework 01: functional/non-functional requirements
 
 
 ### Non-functional requirements:
- - linear growth of users
+ - linear growth of users for several years in a row (> 2 years)
  - geo distribution is not needed
  - user clients: web app, mobile app
  - after the year, DAU = 10 000 000
