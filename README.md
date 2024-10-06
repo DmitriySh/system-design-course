@@ -17,6 +17,6 @@ High-load fault-tolerant systems design course:
 
 ## Homework 1: [Fundamentals of system design](https://github.com/DmitriySh/system-design-course/tree/main/01-fundamentals-system-design)
 
-## Homework 2: Caching, API and Observability
+## Homework 2: [Caching, API and Observability](https://github.com/DmitriySh/system-design-course/tree/main/02-caching-api-and-observability)
 
 ## Homework 3: ..
