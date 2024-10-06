@@ -23,7 +23,6 @@ Homework 01: functional/non-functional requirements
  - DAU: 10 000 000 (after the year)
  - availability: 99,9%
  - all requested should be averaged over the year
- - look for most popular places by reactions in travel posts
 
 
  - Limits:
