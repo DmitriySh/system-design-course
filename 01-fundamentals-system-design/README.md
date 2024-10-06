@@ -1,5 +1,6 @@
 Homework 01: functional/non-functional requirements
 =======
+[Homework description](https://balun-team.yonote.ru/share/aaee17ad-7588-4976-a817-a8f164749d66/doc/domashnee-zadanie-1-JzBmoo0WXt)
 
 ## System design "Social network for travelers"
 ![image](https://github.com/user-attachments/assets/2712c495-7088-4746-a2e3-df7fb2bdcffc)
@@ -22,8 +23,6 @@ Homework 01: functional/non-functional requirements
  - DAU: 10 000 000 (after the year)
  - availability: 99,9%
  - all requested should be averaged over the year
- - CPU, RAM, Storage peak load redundancy: +50%
- - services: reliable, scalable and fault tolerance
  - look for most popular places by reactions in travel posts
 
 
