@@ -58,6 +58,7 @@ Types:
   |  cache  |    |  cache  |    |  cache  |
   -----------    -----------    -----------
 ```
+
  - external caching
    - not high speed; 
    - access with external network requests;
@@ -66,6 +67,7 @@ Types:
    - cache data won't be lost if the service goes down;
    - easy to warm up cache and simple invalidation logic;
 ```
+
    [cache1]          ---->[cache2]<---
        ^             |               |
        |             |               |
@@ -109,6 +111,7 @@ if cache miss:
 (4) - return source data from database;
 (5) - save data into the cache;
 ```
+
  - `cache aside: write` = saved to the cache after insertion into the database
    advantages: database and cache remain consistent
    disadvantage: warming up is necessary if the caching service failed and later started empty 
@@ -132,16 +135,16 @@ if cache miss:
 (2) - response from database about successful update;
 (3) - save data into the cache;
 ```
- - `cache through: read` = all requests go through the cache and update it immediately; \
-   wait when the primary database is updated (blocking mode) or don't wait when update (async mode). \
+
+ - `cache through: read` = all read requests go through the cache and update it immediately; \
    advantages: reducing the load on the database \
    advantages: the cache is up-to-date, which prevents data inconsistency with the database \
-   disadvantage: additional waiting time for a response
+   disadvantage: additional waiting time for a response if cache miss data
 ```
   -----------                 -----------                 -----------
-  |         | ------(1)-----> |         | ------(3)-----> |         |
+  |         | ======(1)=====> |         | ------(3)-----> |         |
   | server  |                 |  cache  |                 |database |
-  |         | <-----(2)------ |         | <-----(4)------ |         |
+  |         | <=====(2)====== |         | <-----(4)------ |         |
   -----------                 -----------                 -----------
 
 (1) - read data by 'key' from the cache;
@@ -149,22 +152,40 @@ if cache miss:
 
 if cache miss:
 (3) - read source data from database;
-(4) - return source data from database and save data into the cache;
+(4) - return source data from database and save data into the cache.
 ```
- - `cache through: write`
+
+ - `cache through: write` = all write requests go through the cache and then update data in database; \
+   wait when the primary database is updated (blocking mode) or don't wait when update (async mode). \
+   advantages: helps cache maintain consistency with the primary database
+   disadvantage: additional waiting time to write data with blocking mode
 ```
   -----------                 -----------                 -----------
-  |         | ------(1)-----> |         | ------(2)-----> |         |
+  |         | ======(1)=====> |         | ======(2)=====> |         |
   | server  |                 |  cache  |                 |database |
   |         | <-----(4)------ |         | <-----(3)------ |         |
   -----------                 -----------                 -----------
 
-(1) - save data into the cache;
+(1) - write data by 'key' into the cache;
 (2) - insert/update data into the database;
-(3) - response from database about successful update and save data into the cache;
-(4) - return data from the cache;
+(3) - response from database about successful update and commit data into the cache;
+(4) - response from cache about successful write.
 ```
- - `cache ahead` = requests always go only to the cache, never going directly to the DB
+
+ - `cache ahead` = read requests always go only to the cache, never use the database data directly
+```
+  -----------                 -----------                 -----------
+  |         | ======(1)=====> |         |                 |         |
+  | server  |                 |  cache  | ------(3)-----> |database |
+  |         | <=====(2)====== |         |                 |         |
+  -----------                 -----------                 -----------
+
+(1) - read data by 'key' from the cache;
+(2) - return data from the cache;
+(3) - periodically upload data from the database.
+```
+
+The choice of **caching strategy** depends on the nature of the load (read or write) and necessity to update the data.
 
 
 ## API
