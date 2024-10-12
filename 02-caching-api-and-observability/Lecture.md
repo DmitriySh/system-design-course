@@ -3,7 +3,11 @@
 
 ## Caching
 This is the practice of temporarily storing frequently used or calculated data in memory or on a disk. \
-The main goal is to speed up the response, not to keep the increased load.
+The main goal is to **speed up the response (RPS)**, not to keep the increased load. The most well-known problem of working 
+with a cache is **data invalidation**. \
+If your program can work without caching, don't use it.
+
+Cache - is a key-value storage with higher speed data access than the main database.
 
 Functionality:
  - reducing the response time of services;
@@ -14,15 +18,17 @@ Functionality:
 Key terms:
  - `Cache miss` = the requested key was not found in the cache
  - `Cache Hit` = the requested key was found in the cache
- - `Hit ratio` = the percentage of hits of requests to the cache (effectiveness of caching)
+ - `Hit ratio` = percentage of hits of requests to the cache (caching is more effective if value closer to 100%)
  - `Hot key` = a key that is accessed frequently, or with a high frequency
  - `Cache warming` = proactive technique to preload data into a cache before it is actually needed by the system
  - `Cache invalidation` = push away the data from the cache memory when the data is outdated
+ - `Expired rate` = percentage of records deleted after TTL expires (caching is ineffective if value higher 50%)
+ - `Eviction rate` = percentage of cache entries evicted when the memory limit is reached (caching is ineffective if value higher 50%)
 
 What data should be cached?
- - can change frequently (lifetime in seconds)
- - can change not frequently (lifetime in minutes/hours)
- - can change rarely (lifetime in days/months)
+ - can change frequently (lifetime in seconds) - no need to be cached
+ - can change not frequently (lifetime in minutes/hours) - caching could help or not
+ - can change rarely (lifetime in days/months) - caching should help
 
 Is caching <span style="color:green">useful</span> or <span style="color:red">harmful</span>?
  - <span style="color:green">useful</span>: caching helps to speed up the response to a request;
@@ -186,6 +192,63 @@ if cache miss:
 ```
 
 The choice of **caching strategy** depends on the nature of the load (read or write) and necessity to update the data.
+
+
+Cache replacement algorithms:
+ - `RR` (random replacement) = replace randomly selected object when the maximum capacity is reached; \
+   doesn't keep history of objects; \
+   very easy to implement;
+ - `FIFO` = objects are replaced in the order they are added to the cache since the older if the maximum capacity is reached (one-way queue); \
+   popular elements will be evicted when they're old enough; \
+   simple and low-cost to implement;
+```
+1add   3add   0add   5add   6add   0read  3add
+| |    | |    |0|    |0|    |0|    |0|    [3]
+| | -> |3| -> |3| -> |3| -> [6] -> |6| -> |6|
+|1|    |1|    |1|    [5]    |5|    |5|    |5|
+```
+ - `LIFO` = objects are replaced in the reverse order they are added to the cache if the maximum capacity is reached (stack); \
+   popular elements can be evicted if they are young enough; \
+   simple and low-cost to implement;
+```
+1add   3add   0add   5add   6add   1read  3add
+| |    | |    |0|    [5]    |5|    |5|    |5|
+| | -> |3| -> |3| -> |3| -> [6] -> |6| -> |6|
+|1|    |1|    |1|    |1|    |1|    |1|    [3]
+```
+ - `LRU` = replace objects in the bottom that **least recently used** if the maximum capacity is reached; \
+   let's imagine a queue whose objects are moved to the top every time they're accessed; \
+   most famous cache replacement algorithm; \
+   providers a nice cache-hit rate for lots of use-cases;
+```
+7add   0add   1add   2add   3add  0read  4add   2read  5add
+| |    | |    | |    |2|    |2|    |2|    |2|    |2|    |2|
+| |    | |    |1|    |1|    |1|    |1|    [4]    |4|    |4|
+| | -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0|
+|7|    |7|    |7|    |7|    [3]    |3|    |3|    |3|    [5]
+```
+ - `MRU` = replace objects in the top that **most recently used** if the maximum capacity is reached; \
+   let's imagine a queue whose objects are moved to the top every time they're accessed; \
+   the algorithm seeks to preserve old data;
+```
+7add   0add   1add   2add   0read  3add   4add   2read  3add
+| |    | |    | |    |2|    |2|    |2|    |2|    |2|    [3]
+| |    | |    |1|    |1|    |1|    |1|    |1|    |1|    |1|
+| | -> |0| -> |0| -> |0| -> |0| -> [3] -> [4] -> |4| -> |4|
+|7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|
+```
+ - `LFU` = keeps track how many times objects have been accessed (has a counter) and replaces the **least frequently used** objects (lowest counters); \
+   problem: object with big counter value very hard to replace, although it has not been accessed for a long time
+```
+7add   0add   1add   2add   0read  3add   4add   2read  5add
+| |    | |    | |    |2|    |2|    |2|    |2|    |2|    |2|
+| |    | |    |1|    |1|    |1|    |1|    [4]    |4|    |4|
+| | -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0|
+|7|    |7|    |7|    |7|    |7|    [3]    |3|    |3|    [5]
+```
+ - `Second chance` =  modification of the FIFO algorithm; \
+   each object in the cache has 1 special bit of meta-info - object previously used (yes/no); \
+   if replace object doesn't have 1 bit, then the object is deleted otherwise bit is cleared and the object is returned as a new
 
 
 ## API
