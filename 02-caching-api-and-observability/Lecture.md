@@ -203,7 +203,7 @@ Cache replacement algorithms:
    simple and low-cost to implement;
 ```
 1add   3add   0add   5add   6add   0read  3add
-| |    | |    |0|    |0|    |0|    |0|    [3]
+| |    | |    |0|    |0|    |0|    [0]    [3]
 | | -> |3| -> |3| -> |3| -> [6] -> |6| -> |6|
 |1|    |1|    |1|    [5]    |5|    |5|    |5|
 ```
@@ -214,7 +214,7 @@ Cache replacement algorithms:
 1add   3add   0add   5add   6add   1read  3add
 | |    | |    |0|    [5]    |5|    |5|    |5|
 | | -> |3| -> |3| -> |3| -> [6] -> |6| -> |6|
-|1|    |1|    |1|    |1|    |1|    |1|    [3]
+|1|    |1|    |1|    |1|    |1|    [1]    [3]
 ```
  - `LRU` = replace objects in the bottom that **least recently used** if the maximum capacity is reached; \
    let's imagine a queue whose objects are moved to the top every time they're accessed; \
@@ -224,7 +224,7 @@ Cache replacement algorithms:
 7add   0add   1add   2add   3add  0read  4add   2read  5add
 | |    | |    | |    |2|    |2|    |2|    |2|    |2|    |2|
 | |    | |    |1|    |1|    |1|    |1|    [4]    |4|    |4|
-| | -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0|
+| | -> |0| -> |0| -> |0| -> |0| -> [0] -> |0| -> |0| -> |0|
 |7|    |7|    |7|    |7|    [3]    |3|    |3|    |3|    [5]
 ```
  - `MRU` = replace objects in the top that **most recently used** if the maximum capacity is reached; \
@@ -232,26 +232,67 @@ Cache replacement algorithms:
    the algorithm seeks to preserve old data;
 ```
 7add   0add   1add   2add   0read  3add   4add   2read  3add
-| |    | |    | |    |2|    |2|    |2|    |2|    |2|    [3]
+| |    | |    | |    |2|    |2|    |2|    |2|    [2]    [3]
 | |    | |    |1|    |1|    |1|    |1|    |1|    |1|    |1|
-| | -> |0| -> |0| -> |0| -> |0| -> [3] -> [4] -> |4| -> |4|
+| | -> |0| -> |0| -> |0| -> [0] -> [3] -> [4] -> |4| -> |4|
 |7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|
 ```
  - `LFU` = keeps track how many times objects have been accessed (has a counter) and replaces the **least frequently used** objects (lowest counters); \
    problem: object with big counter value very hard to replace, although it has not been accessed for a long time
 ```
 7add   0add   1add   2add   0read  3add   4add   2read  5add
-| |    | |    | |    |2|    |2|    |2|    |2|    |2|    |2|
+| |    | |    | |    |2|    |2|    |2|    |2|    [2]    |2|
 | |    | |    |1|    |1|    |1|    |1|    [4]    |4|    |4|
-| | -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0| -> |0|
+| | -> |0| -> |0| -> |0| -> [0] -> |0| -> |0| -> |0| -> |0|
 |7|    |7|    |7|    |7|    |7|    [3]    |3|    |3|    [5]
 ```
  - `Second chance` =  modification of the FIFO algorithm; \
    each object in the cache has 1 special bit of meta-info - object previously used (yes/no); \
-   if replace object doesn't have 1 bit, then the object is deleted otherwise bit is cleared and the object is returned as a new
+   if replace object have 1 bit=no, then the object is deleted otherwise bit=yes is cleared and the object is returned in the queue as a new
+ - `2Q` = rule: object accessed once cannot yet be allowed to be cached; \
+   the object that is accessed again may already be in the main cache. There are:
+   - 2 FIFO queues: InFIFO --(evicted data)--> OutFIFO --(evicted data)--> /dev/null; OutFIFO --(accessed data)--> Main LRU; \
+     OutFIFO is bigger in capacity than InFIFO
+   - 1 main LRU cache: LRU --(evicted data)--> /dev/null
+```
+      ----------------------------
+      |         LRU cache        | <---
+      ----------------------------    |
+                                      |
+     ------------     -------------   |
+ --> | In Queue | --> | Out Queue | --|
+     ------------     -------------
+```
+
+
+Cache invalidation: \
+if the data in the cache is out of date, we need to push away it
+ - `TTL` = delete if the **time to live** is up; the question is how long should the TTL be?
+ - `Jitter for TTL` = random TTL param helps to distribute the lifetime of data evenly by timeline
+ - `Notification` = centralized update process
+```
+                 ---------> [Cache 1]
+                 |
+Notifier ---> [Broker] ---> [Cache 2]
+                 |
+                 ---------> [Cache 3]
+```
+ - `Versioning` = updating data in cache with new version of (file name, key meta-data) \
+   example: caching key icon -> icon_v2 -> icon_v3
+ - `Tags` = the cache is divided into different fragments, they marked with different tags; each cache fragment can be updated by tag; \
+   tags: weather, currency, news, tv_programs, ...
+
+
+Caches layers:
+ - browser cache;
+ - proxy-server cache;
+ - internal application cache;
+ - external service cache;
+ - database cache;
 
 
 ## API
+
 
 
 ## Observability
