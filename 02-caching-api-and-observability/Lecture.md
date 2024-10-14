@@ -293,6 +293,102 @@ Caches layers:
 
 ## API
 
+`CRUD` = common operations build workflow with data.
+
+`REST` (REpresentational State Transfer) = architectural style that defines a set of constraints to be used \
+for creating a distributed application in the network. This is how web services interact. \
+`REST` is not a framework, a protocol or communication format. It is an architectural style or design pattern for APIs.
+
+REST API:
+- request method (GET, POST, DELETE, PUT);
+- request URI;
+- request headers;
+- request/response body;
+- status code.
+```
+Request:
+GET localhost:8080/books/1
+
+Response:
+200 OK
+{"id":1,"title":"book 1","isbn":"0-395-08254-1","authors":[1,2,3,4],"genres":[1,2]}
+```
+
+`SOAP` = a protocol for exchanging structured XML messages between a client and a server over HTTP
+
+`RPC` = a technology that allows a program on one server to call a function on another server as if the function were on the first server
+ - gRPC (HTTP-based RPC from Google used Protobuf)
+ - tRPC (HTTP-based RPC for full-stack TypeScript developers)
+
+`GraphQL` = data query language and data manipulation language
+ - one URL to communicate with server
+ - the response is built based on the request body
+ - resolve problem under and over fetching data for different platforms
+   - under fetching = not enough response data in API endpoint (need one more endpoint)
+   - over fetching = excess response data in API endpoint (extra traffic consumption)
+```
+request1:             response1:
+{                     {
+  hero {                "hero": {
+    name     --->         "name": "Luke Skywalker"
+  }                     }
+}                     }
+
+---
+request2:             response2:
+{                     {
+  hero {                "hero": {
+    name     --->         "name": "Luke Skywalker"
+    height                "height": 1.72
+    mass                  "mass": 77
+  }                     }
+}                     }
+```
+
+How to receive updates from the server to client?
+ - `polling` = request each N-seconds and respond immediately
+```
+  -----------                 ----------- 
+  |         | ====request===> |         | 
+  | client  |                 | server  | 
+  |         | <===response=== |         | 
+  -----------                 ----------- 
+```
+ - `long polling` = request open and keep a connection; server make a response immediately if there is data 
+   or later when it appears, or several answers in progress; base timeout 30 seconds
+```
+  -----------                 ----------- 
+  |         | ====request===> |         | 
+  | client  | <---response--- | server  | 
+  |         | <---response--- |         | 
+  -----------                 ----------- 
+```
+ - `webhook` = used for data transfer between source and destination systems; \
+   - redirect URI: redirecting the client to another URL after processing the previous request;
+   - avoid polling: callback to give delayed response on the earlier request
+```
+  -----------                 ----------- 
+  |         | ======(1)=====> |         | 
+  | order   |                 | payment | 
+  | service | <-----(2)------ | service |
+  -----------                 ----------- 
+
+(1) - POST https://payment.com/api/order?callbackURL=https://order.com/confirm-payment
+(2) - POST https://order.com/confirm-payment
+```
+ - `streaming` = a method of continuously transmitting data from a server to a client
+   - server-sent events (SSE): one-way message transmission from server to client
+   - websocket: thin transport layer built on top of a device's TCP/IP stack, which provides full-duplex, \
+     low-latency, event-driven connections between the server and the browser
+
+
+How to improve API, tips :
+ - use pagination for a large number of entities sent by chunks;
+ - requests and responses can be compressed;
+ - caching requested data on a client side and reuse it;
+ - use idempotency key to check request has been executed before (client generates and server verifies);
+ - use versioning of your API (/api/v1/);
+
 
 
 ## Observability
