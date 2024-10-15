@@ -393,3 +393,48 @@ How to improve API, tips :
 
 ## Observability
 
+`Monitoring` = process of collecting, analyzing, and visualizing data about an application's operation 
+to ensure its reliability, performance, and availability
+ - Prometheus
+ - Victoria Metrics
+ - Zabbix
+ - Graphite
+
+Approach to collecting metrics:
+ - LTES (Google SRE)
+   - latency: time to process one request
+   - traffic: number of requests to the component
+   - errors: number of errors
+   - saturation: a quantitative metric of how much a component uses its resources
+ - RED (Brendan Gregg)
+   - rate: number of requests per unit of time (rps)
+   - errors: number of errors
+   - latency/duration: processing time of one request
+ - USE (Tom Wilkie):
+   - utilization: время или процент использования ресурса
+   - saturation: the amount of deferred or queued "work"
+   - errors: number of errors
+
+
+`Alerts` = monitors changes in specific metrics using alerts and sends notifications through
+a notification channel
+
+
+`Logging` = event log entries: what happened, when and under what circumstances
+ - errors and exceptions
+ - events and user actions
+ - requests to the server and third-party resources
+ - information about the application status
+
+
+`Tracing` = a distributed query analysis tool that can help you identify where failures occur, 
+what causes poor performance, and how specific queries are being processed
+ - Jaeger
+ - Zipkin
+ - LightStep
+
+
+`Profiling` = method of analyzing and measuring software performance that provides real-time data 
+on the program's operation
+ - Parca
+ - Pyroscope
