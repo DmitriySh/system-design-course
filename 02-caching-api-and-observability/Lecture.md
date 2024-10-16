@@ -7,7 +7,7 @@ The main goal is to **speed up the response (RPS)**, not to keep the increased l
 with a cache is **data invalidation**. \
 If your program can work without caching, don't use it.
 
-Cache - is a key-value storage with higher speed data access than the main database.
+Cache - is a key-value storage in memory with higher speed data access than the main database.
 
 Functionality:
  - reducing the response time of services;
