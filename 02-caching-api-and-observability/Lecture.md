@@ -17,7 +17,7 @@ Functionality:
 
 Key terms:
  - `Cache miss` = the requested key was not found in the cache
- - `Cache Hit` = the requested key was found in the cache
+ - `Cache hit` = the requested key was found in the cache
  - `Hit ratio` = percentage of hits of requests to the cache (caching is more effective if value closer to 100%)
  - `Hot key` = a key that is accessed frequently, or with a high frequency
  - `Cache warming` = proactive technique to preload data into a cache before it is actually needed by the system
