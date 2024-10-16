@@ -118,8 +118,8 @@ if cache miss:
 (5) - save data into the cache;
 ```
 
- - `cache aside: write` = saved to the cache after insertion into the database
-   advantages: database and cache remain consistent
+ - `cache aside: write` = saved to the cache after insertion into the database \
+   advantages: database and cache remain consistent \
    disadvantage: warming up is necessary if the caching service failed and later started empty 
 ```
   -----------                 -----------
