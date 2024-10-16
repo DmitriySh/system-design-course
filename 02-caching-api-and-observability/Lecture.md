@@ -300,7 +300,7 @@ for creating a distributed application in the network. This is how web services 
 `REST` is not a framework, a protocol or communication format. It is an architectural style or design pattern for APIs.
 
 REST API:
-- request method (GET, POST, DELETE, PUT);
+- request method (GET, POST, DELETE, PUT, PATCH);
 - request URI;
 - request headers;
 - request/response body;
