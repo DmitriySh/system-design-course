@@ -138,7 +138,7 @@ if cache miss:
   -----------
 
 (1) - insert/update data into the database;
-(2) - response from database about successful update;
+(2) - response from database about successful insert/update;
 (3) - save data into the cache;
 ```
 
