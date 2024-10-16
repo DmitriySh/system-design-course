@@ -163,7 +163,7 @@ if cache miss:
 
  - `cache through: write` = all write requests go through the cache and then update data in database; \
    wait when the primary database is updated (blocking mode) or don't wait when update (async mode). \
-   advantages: helps cache maintain consistency with the primary database
+   advantages: helps cache maintain consistency with the primary database \
    disadvantage: additional waiting time to write data with blocking mode
 ```
   -----------                 -----------                 -----------
