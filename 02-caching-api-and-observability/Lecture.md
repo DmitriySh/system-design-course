@@ -307,7 +307,7 @@ REST API:
 - status code.
 ```
 Request:
-GET localhost:8080/books/1
+GET localhost:8080/books/1?param=value
 
 Response:
 200 OK
