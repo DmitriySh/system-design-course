@@ -411,7 +411,7 @@ Approach to collecting metrics:
    - errors: number of errors
    - latency/duration: processing time of one request
  - USE (Tom Wilkie):
-   - utilization: время или процент использования ресурса
+   - utilization: time or percentage of resource usage
    - saturation: the amount of deferred or queued "work"
    - errors: number of errors
 
