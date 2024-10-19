@@ -316,7 +316,7 @@ Response:
 
 `SOAP` = a protocol for exchanging structured XML messages between a client and a server over HTTP
 
-`RPC` = a technology that allows a program on oneHow to improve API server to call a function on another server as if the function were on the first server
+`RPC` = a technology that allows a program on one server to call a function on another server as if the function were on the first server
  - gRPC (HTTP-based RPC from Google used Protobuf)
  - tRPC (HTTP-based RPC for full-stack TypeScript developers)
 
