@@ -219,7 +219,8 @@ Cache replacement algorithms:
  - `LRU` = replace objects in the bottom that **least recently used** if the maximum capacity is reached; \
    let's imagine a queue whose objects are moved to the top every time they're accessed; \
    most famous cache replacement algorithm; \
-   providers a nice cache-hit rate for lots of use-cases;
+   advantages: providers a nice cache-hit rate for lots of use-cases; \
+   advantages: constant execution time and memory usage
 ```
 7add   0add   1add   2add   3add  0read  4add   2read  5add
 | |    | |    | |    |2|    |2|    |2|    |2|    |2|    |2|
@@ -238,7 +239,8 @@ Cache replacement algorithms:
 |7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|    |7|
 ```
  - `LFU` = keeps track how many times objects have been accessed (has a counter) and replaces the **least frequently used** objects (lowest counters); \
-   problem: object with big counter value very hard to replace, although it has not been accessed for a long time
+   problem: object with big counter value very hard to replace, although it has not been accessed for a long time; \
+   disadvantage: not suitable for use in modern database caching
 ```
 7add   0add   1add   2add   0read  3add   4add   2read  5add
 | |    | |    | |    |2|    |2|    |2|    |2|    [2]    |2|
@@ -246,9 +248,17 @@ Cache replacement algorithms:
 | | -> |0| -> |0| -> |0| -> [0] -> |0| -> |0| -> |0| -> |0|
 |7|    |7|    |7|    |7|    |7|    [3]    |3|    |3|    [5]
 ```
- - `Second chance` =  modification of the FIFO algorithm; \
-   each object in the cache has 1 special bit of meta-info - object previously used (yes/no); \
-   if replace object have 1 bit=no, then the object is deleted otherwise bit=yes is cleared and the object is returned in the queue as a new
+ - `Second chance / Clock` =  modification of the FIFO algorithm; \
+   each object in the cache has 1 special bit of meta-info - object previously used (yes=1/no=0); \
+   if replace object have 1 bit=no, then the object is deleted otherwise bit=yes is cleared to bit=no; \
+   advantages: more efficient than LRU with a lower miss ratio
+```
+7add      0add      1add      2add      0read     3add                4add      2read     5add      7add
+|    |    |    |    |    |    |2(1)|    |2(1)|    [2(0)]    |2(0)|    |2(0)|    [2(1)]    |2(1)|    [2(0)]    [7(1)]
+|    |    |    |    |1(1)|    |1(1)|    |1(1)|    [1(0)]    |1(0)|    |1(0)|    |1(0)|    [5(1)]    [5(0)]    |5(0)|
+|    | -> |0(1)| -> |0(1)| -> |0(1)| -> [0(1)] -> [0(0)] => |0(0)| -> [4(1)] -> |4(1)| -> |4(1)| -> [4(0)] => |4(0)|
+|7(1)|    |7(1)|    |7(1)|    |7(1)|    |7(1)|    [7(0)]    [3(1)]    |3(1)|    |3(1)|    |3(1)|    [3(0)]    |3(0)|
+```
  - `2Q` = rule: object accessed once cannot yet be allowed to be cached; \
    the object that is accessed again may already be in the main cache. There are:
    - 2 FIFO queues: InFIFO --(evicted data)--> OutFIFO --(evicted data)--> /dev/null; OutFIFO --(accessed data)--> Main LRU; \
