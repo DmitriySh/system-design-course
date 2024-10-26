@@ -1,0 +1,765 @@
+openapi: "3.0.0"
+info:
+  title: "money_transfer API"
+  description: "money_transfer API"
+  version: "1.0.0"
+servers:
+  - url: "https://money_transfer"
+paths:
+  /api/posts:
+    post:
+      tags:
+        - "posts"
+      summary: "New post"
+      description: "User make a new post"
+      operationId: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostShortResponse"
+  /api/posts/user-feeds:
+    get:
+      tags:
+        - "posts"
+      summary: "Get feed of posts with pagination"
+      description: "Get user's feed of posts with pagination"
+      operationId: ""
+      parameters:
+        - name: "userId"
+          in: "query"
+          required: true
+          description: "Id of the post author"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedPostsResponse"
+  /api/posts/popular-locations:
+    get:
+      tags:
+        - "posts"
+      summary: "Get popular posts with pagination"
+      description: "Get popular users posts by coordinates location with pagination"
+      operationId: ""
+      parameters:
+        - name: "coordinateX"
+          in: "query"
+          required: true
+          description: "The x-coordinate to determine the location"
+          schema:
+            type: "number"
+            format: "double"
+        - name: "coordinateY"
+          in: "query"
+          required: true
+          description: "The y-coordinate to determine the location"
+          schema:
+            type: "number"
+            format: "double"
+        - name: "radius"
+          in: "query"
+          required: false
+          description: "Radius of distance from coordinate point"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "100"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopularLocationPostsResponse"
+  /api/posts/{postId}:
+    get:
+      tags:
+        - "posts"
+      summary: "Get post"
+      description: "Get user post by id"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostGetResponse"
+    put:
+      tags:
+        - "posts"
+      summary: "Update post"
+      description: "User update the post by id"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostShortResponse"
+    delete:
+      tags:
+        - "posts"
+      summary: "Delete post"
+      description: "User delete post by id"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+  /api/posts/{postId}/attachments:
+    post:
+      tags:
+        - "attachments"
+      summary: "New post attachment"
+      description: "User make a new post attachment"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "file"
+          in: "query"
+          required: true
+          description: "Post attachment files"
+          schema:
+            type: "string"
+            format: "binary"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostAttachmentResponse"
+    get:
+      tags:
+        - "attachments"
+      summary: "Get post attachments"
+      description: "User get all post attachments"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostAttachmentResponse"
+  /api/attachments/{attachmentId}:
+    delete:
+      tags:
+        - "attachments"
+      summary: "Delete attachment"
+      description: "User delete attachment by id"
+      operationId: ""
+      parameters:
+        - name: "attachmentId"
+          in: "path"
+          required: true
+          description: "Attachment file id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+  /api/posts/{postId}/reactions:
+    post:
+      tags:
+        - "reactions"
+      summary: "New post reaction"
+      description: "User make a new post reaction"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostReactionRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostReactionShortResponse"
+    get:
+      tags:
+        - "reactions"
+      summary: "Get post reactions"
+      description: "User get all post reactions"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostReactionResponse"
+  /api/reactions/{reactionId}:
+    delete:
+      tags:
+        - "reactions"
+      summary: "Delete reaction"
+      description: "User delete reaction by id"
+      operationId: ""
+      parameters:
+        - name: "reactionId"
+          in: "path"
+          required: true
+          description: "Reaction id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+  /api/posts/{postId}/comments:
+    post:
+      tags:
+        - "comments"
+      summary: "New post comment"
+      description: "User make a new post comment"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostCommentCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCommentShortResponse"
+    get:
+      tags:
+        - "comments"
+      summary: "Get post comments"
+      description: "User get all post comments"
+      operationId: ""
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostCommentResponse"
+  /api/comments/{commentId}:
+    put:
+      tags:
+        - "comments"
+      summary: "Update comment"
+      description: "User update comment by id"
+      operationId: ""
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          description: "Comment id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCommentUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCommentShortResponse"
+    delete:
+      tags:
+        - "comments"
+      summary: "Delete comment"
+      description: "User delete comment by id"
+      operationId: ""
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          description: "Comment id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+  /api/users/{userId}:
+    get:
+      tags:
+        - "users"
+      summary: "Get user info"
+      description: "Get user by id"
+      operationId: ""
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /api/users}:
+    get:
+      tags:
+        - "users"
+      summary: "Get users by ids"
+      description: "Get users profiles by ids"
+      operationId: ""
+      parameters:
+        - name: "userIds"
+          in: "query"
+          required: true
+          description: "User ids"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+              format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+  /api/users/{userId}/subscriptions:
+    get:
+      tags:
+        - "subscriptions"
+      summary: "Get user subscriptions with pagination"
+      description: "Get all user subscriptions by id with pagination"
+      operationId: ""
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserSubscriptionsResponse"
+    post:
+      tags:
+        - "subscriptions"
+      summary: "Subscribe to a user"
+      description: "User subscribes to another user"
+      operationId: ""
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "followingUserId"
+          in: "query"
+          required: true
+          description: "User id being followed"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSubscriptionsResponse"
+  /api/subscriptions/{subscriptionId}:
+    delete:
+      tags:
+        - "subscriptions"
+      summary: "Delete user subscription"
+      description: "Delete user subscription by id"
+      operationId: ""
+      parameters:
+        - name: "subscriptionId"
+          in: "path"
+          required: true
+          description: "Subscription id between users"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+components:
+  schemas:
+    PostCreateRequest:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+        text:
+          type: "string"
+        coordinateX:
+          type: "number"
+          format: "double"
+        coordinateY:
+          type: "number"
+          format: "double"
+    PostShortResponse:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+    Instant:
+      type: "object"
+      properties: { }
+    PostGetResponse:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        updatedAt:
+          $ref: "#/components/schemas/Instant"
+        postId:
+          type: "string"
+          format: "uuid"
+        text:
+          type: "string"
+        coordinateX:
+          type: "number"
+          format: "double"
+        coordinateY:
+          type: "number"
+          format: "double"
+    FeedPostsResponse:
+      type: "object"
+      properties:
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostGetResponse"
+    PopularLocationPostsResponse:
+      type: "object"
+      properties:
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostGetResponse"
+    PostUpdateRequest:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+        text:
+          type: "string"
+        coordinateX:
+          type: "number"
+          format: "double"
+        coordinateY:
+          type: "number"
+          format: "double"
+    PostAttachmentResponse:
+      type: "object"
+      properties:
+        postId:
+          type: "string"
+          format: "uuid"
+        postUserId:
+          type: "string"
+          format: "uuid"
+        attachmentId:
+          type: "string"
+          format: "uuid"
+        contentType:
+          type: "string"
+          enum:
+            - "IMAGE"
+            - "OTHER"
+        fileName:
+          type: "string"
+        url:
+          type: "string"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+    PostReactionRequest:
+      type: "object"
+      properties:
+        reactionUserId:
+          type: "string"
+          format: "uuid"
+        reactionType:
+          type: "string"
+          enum:
+            - "LIKE"
+            - "DISLIKE"
+    PostReactionShortResponse:
+      type: "object"
+      properties:
+        reactionId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+    PostReactionResponse:
+      type: "object"
+      properties:
+        reactionId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+        reactionUserId:
+          type: "string"
+          format: "uuid"
+        reactionType:
+          type: "string"
+          enum:
+            - "LIKE"
+            - "DISLIKE"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+    PostCommentCreateRequest:
+      type: "object"
+      properties:
+        commentUserId:
+          type: "string"
+          format: "uuid"
+        comment:
+          type: "string"
+    PostCommentShortResponse:
+      type: "object"
+      properties:
+        commentId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+    PostCommentResponse:
+      type: "object"
+      properties:
+        commentId:
+          type: "string"
+          format: "uuid"
+        postId:
+          type: "string"
+          format: "uuid"
+        commentUserId:
+          type: "string"
+          format: "uuid"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        updatedAt:
+          $ref: "#/components/schemas/Instant"
+    PostCommentUpdateRequest:
+      type: "object"
+      properties:
+        commentUserId:
+          type: "string"
+          format: "uuid"
+        comment:
+          type: "string"
+    UserResponse:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          format: "uuid"
+        fullName:
+          type: "string"
+        description:
+          type: "string"
+        iconUrl:
+          type: "string"
+        email:
+          type: "string"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+    UserSubscriptionsResponse:
+      type: "object"
+      properties:
+        subscriptionId:
+          type: "string"
+          format: "uuid"
+        userId:
+          type: "string"
+          format: "uuid"
+        followingUserId:
+          type: "string"
+          format: "uuid"
