@@ -561,23 +561,29 @@ components:
         postUserId:
           type: "string"
           format: "uuid"
+          description: "Id of the post author"
         text:
           type: "string"
+          description: "The content of the post"
         coordinateX:
           type: "number"
           format: "double"
+          description: "The location x-coordinate of the place associated with this post"
         coordinateY:
           type: "number"
           format: "double"
+          description: "The location y-coordinate of the place associated with this post"
     PostShortResponse:
       type: "object"
       properties:
         postUserId:
           type: "string"
           format: "uuid"
+          description: "Id of the post author"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
     Instant:
       type: "object"
       properties: { }
@@ -587,6 +593,7 @@ components:
         postUserId:
           type: "string"
           format: "uuid"
+          description: "Id of the post author"
         createdAt:
           $ref: "#/components/schemas/Instant"
         updatedAt:
@@ -594,25 +601,31 @@ components:
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
         text:
           type: "string"
+          description: "The content of the post"
         coordinateX:
           type: "number"
           format: "double"
+          description: "The location x-coordinate of the place associated with this post"
         coordinateY:
           type: "number"
           format: "double"
+          description: "The location y-coordinate of the place associated with this post"
     FeedPostsResponse:
       type: "object"
       properties:
         posts:
           type: "array"
+          description: "Post's feed"
           items:
             $ref: "#/components/schemas/PostGetResponse"
     PopularLocationPostsResponse:
       type: "object"
       properties:
         posts:
+          description: "Popular posts"
           type: "array"
           items:
             $ref: "#/components/schemas/PostGetResponse"
@@ -622,38 +635,49 @@ components:
         postUserId:
           type: "string"
           format: "uuid"
+          description: "Id of the post author"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
         text:
           type: "string"
+          description: "The content of the post"
         coordinateX:
           type: "number"
           format: "double"
+          description: "The location x-coordinate of the place associated with this post"
         coordinateY:
           type: "number"
           format: "double"
+          description: "The location y-coordinate of the place associated with this post"
     PostAttachmentResponse:
       type: "object"
       properties:
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
         postUserId:
           type: "string"
           format: "uuid"
+          description: "Id of the post author"
         attachmentId:
           type: "string"
           format: "uuid"
+          description: "Attachment file id"
         contentType:
           type: "string"
+          description: "File content type"
           enum:
             - "IMAGE"
             - "OTHER"
         fileName:
           type: "string"
+          description: "Attachment file name"
         url:
           type: "string"
+          description: "Attachment file URL"
         createdAt:
           $ref: "#/components/schemas/Instant"
     PostReactionRequest:
@@ -662,8 +686,10 @@ components:
         reactionUserId:
           type: "string"
           format: "uuid"
+          description: "ID of the author who placed the reaction"
         reactionType:
           type: "string"
+          description: "Reaction type"
           enum:
             - "LIKE"
             - "DISLIKE"
@@ -673,23 +699,29 @@ components:
         reactionId:
           type: "string"
           format: "uuid"
+          description: "Id of the reaction"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
     PostReactionResponse:
       type: "object"
       properties:
         reactionId:
           type: "string"
           format: "uuid"
+          description: "Id of the reaction"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
         reactionUserId:
           type: "string"
           format: "uuid"
+          description: "ID of the author who placed the reaction"
         reactionType:
           type: "string"
+          description: "Reaction type"
           enum:
             - "LIKE"
             - "DISLIKE"
@@ -701,29 +733,36 @@ components:
         commentUserId:
           type: "string"
           format: "uuid"
+          description: "ID of the author who wrote the comment"
         comment:
           type: "string"
+          description: "Comment text"
     PostCommentShortResponse:
       type: "object"
       properties:
         commentId:
           type: "string"
           format: "uuid"
+          description: "Id of the comment"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
     PostCommentResponse:
       type: "object"
       properties:
         commentId:
           type: "string"
           format: "uuid"
+          description: "Id of the comment"
         postId:
           type: "string"
           format: "uuid"
+          description: "Id of the post"
         commentUserId:
           type: "string"
           format: "uuid"
+          description: "ID of the author who wrote the comment"
         createdAt:
           $ref: "#/components/schemas/Instant"
         updatedAt:
@@ -734,22 +773,29 @@ components:
         commentUserId:
           type: "string"
           format: "uuid"
+          description: "ID of the author who wrote the comment"
         comment:
           type: "string"
+          description: "Comment text"
     UserResponse:
       type: "object"
       properties:
         userId:
           type: "string"
           format: "uuid"
+          description: "User id"
         fullName:
           type: "string"
+          description: "User full name"
         description:
           type: "string"
+          description: "Brief information about the user"
         iconUrl:
           type: "string"
+          description: "User profile icon"
         email:
           type: "string"
+          description: "User email"
         createdAt:
           $ref: "#/components/schemas/Instant"
     UserSubscriptionsResponse:
@@ -758,9 +804,12 @@ components:
         subscriptionId:
           type: "string"
           format: "uuid"
+          description: "Subscription id between users"
         userId:
           type: "string"
           format: "uuid"
+          description: "User id"
         followingUserId:
           type: "string"
           format: "uuid"
+          description: "User id who is subscribed to"
