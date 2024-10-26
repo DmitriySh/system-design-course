@@ -1,10 +1,8 @@
 openapi: "3.0.0"
 info:
-  title: "money_transfer API"
-  description: "money_transfer API"
+  title: "Social network for travelers API"
+  description: "Current API describes interaction with Social network"
   version: "1.0.0"
-servers:
-  - url: "https://money_transfer"
 paths:
   /api/posts:
     post:
@@ -12,7 +10,6 @@ paths:
         - "posts"
       summary: "New post"
       description: "User make a new post"
-      operationId: ""
       requestBody:
         content:
           application/json:
@@ -32,7 +29,6 @@ paths:
         - "posts"
       summary: "Get feed of posts with pagination"
       description: "Get user's feed of posts with pagination"
-      operationId: ""
       parameters:
         - name: "userId"
           in: "query"
@@ -70,7 +66,6 @@ paths:
         - "posts"
       summary: "Get popular posts with pagination"
       description: "Get popular users posts by coordinates location with pagination"
-      operationId: ""
       parameters:
         - name: "coordinateX"
           in: "query"
@@ -123,7 +118,6 @@ paths:
         - "posts"
       summary: "Get post"
       description: "Get user post by id"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -144,7 +138,6 @@ paths:
         - "posts"
       summary: "Update post"
       description: "User update the post by id"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -171,7 +164,6 @@ paths:
         - "posts"
       summary: "Delete post"
       description: "User delete post by id"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -189,7 +181,6 @@ paths:
         - "attachments"
       summary: "New post attachment"
       description: "User make a new post attachment"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -217,7 +208,6 @@ paths:
         - "attachments"
       summary: "Get post attachments"
       description: "User get all post attachments"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -241,7 +231,6 @@ paths:
         - "attachments"
       summary: "Delete attachment"
       description: "User delete attachment by id"
-      operationId: ""
       parameters:
         - name: "attachmentId"
           in: "path"
@@ -259,7 +248,6 @@ paths:
         - "reactions"
       summary: "New post reaction"
       description: "User make a new post reaction"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -286,7 +274,6 @@ paths:
         - "reactions"
       summary: "Get post reactions"
       description: "User get all post reactions"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -310,7 +297,6 @@ paths:
         - "reactions"
       summary: "Delete reaction"
       description: "User delete reaction by id"
-      operationId: ""
       parameters:
         - name: "reactionId"
           in: "path"
@@ -328,7 +314,6 @@ paths:
         - "comments"
       summary: "New post comment"
       description: "User make a new post comment"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -355,7 +340,6 @@ paths:
         - "comments"
       summary: "Get post comments"
       description: "User get all post comments"
-      operationId: ""
       parameters:
         - name: "postId"
           in: "path"
@@ -379,7 +363,6 @@ paths:
         - "comments"
       summary: "Update comment"
       description: "User update comment by id"
-      operationId: ""
       parameters:
         - name: "commentId"
           in: "path"
@@ -406,7 +389,6 @@ paths:
         - "comments"
       summary: "Delete comment"
       description: "User delete comment by id"
-      operationId: ""
       parameters:
         - name: "commentId"
           in: "path"
@@ -424,7 +406,6 @@ paths:
         - "users"
       summary: "Get user info"
       description: "Get user by id"
-      operationId: ""
       parameters:
         - name: "userId"
           in: "path"
@@ -446,7 +427,6 @@ paths:
         - "users"
       summary: "Get users by ids"
       description: "Get users profiles by ids"
-      operationId: ""
       parameters:
         - name: "userIds"
           in: "query"
@@ -472,7 +452,6 @@ paths:
         - "subscriptions"
       summary: "Get user subscriptions with pagination"
       description: "Get all user subscriptions by id with pagination"
-      operationId: ""
       parameters:
         - name: "userId"
           in: "path"
@@ -511,7 +490,6 @@ paths:
         - "subscriptions"
       summary: "Subscribe to a user"
       description: "User subscribes to another user"
-      operationId: ""
       parameters:
         - name: "userId"
           in: "path"
@@ -540,7 +518,6 @@ paths:
         - "subscriptions"
       summary: "Delete user subscription"
       description: "Delete user subscription by id"
-      operationId: ""
       parameters:
         - name: "subscriptionId"
           in: "path"
