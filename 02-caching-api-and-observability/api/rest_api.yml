@@ -1,8 +1,18 @@
 openapi: "3.0.0"
+
+tags:
+  - name: users
+  - name: posts
+  - name: reactions
+  - name: comments
+  - name: attachments
+  - name: subscriptions
+
 info:
   title: "Social network for travelers API"
   description: "Current API describes interaction with Social network"
   version: "1.0.0"
+
 paths:
   /api/posts:
     post:
@@ -23,6 +33,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostShortResponse"
+
   /api/posts/user-feeds:
     get:
       tags:
@@ -60,6 +71,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/FeedPostsResponse"
+
   /api/posts/popular-locations:
     get:
       tags:
@@ -112,6 +124,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PopularLocationPostsResponse"
+
   /api/posts/{postId}:
     get:
       tags:
@@ -175,6 +188,7 @@ paths:
       responses:
         "204":
           description: "No Content"
+
   /api/posts/{postId}/attachments:
     post:
       tags:
@@ -225,6 +239,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/PostAttachmentResponse"
+
   /api/attachments/{attachmentId}:
     delete:
       tags:
@@ -242,6 +257,7 @@ paths:
       responses:
         "204":
           description: "No Content"
+
   /api/posts/{postId}/reactions:
     post:
       tags:
@@ -291,6 +307,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/PostReactionResponse"
+
   /api/reactions/{reactionId}:
     delete:
       tags:
@@ -308,6 +325,7 @@ paths:
       responses:
         "204":
           description: "No Content"
+
   /api/posts/{postId}/comments:
     post:
       tags:
@@ -357,6 +375,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/PostCommentResponse"
+
   /api/comments/{commentId}:
     put:
       tags:
@@ -400,6 +419,7 @@ paths:
       responses:
         "204":
           description: "No Content"
+
   /api/users/{userId}:
     get:
       tags:
@@ -421,6 +441,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserResponse"
+
   /api/users}:
     get:
       tags:
@@ -446,6 +467,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/UserResponse"
+
   /api/users/{userId}/subscriptions:
     get:
       tags:
@@ -512,6 +534,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserSubscriptionsResponse"
+
   /api/subscriptions/{subscriptionId}:
     delete:
       tags:
@@ -529,6 +552,7 @@ paths:
       responses:
         "204":
           description: "No Content"
+
 components:
   schemas:
     PostCreateRequest:
