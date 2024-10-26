@@ -573,6 +573,11 @@ components:
           type: "number"
           format: "double"
           description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - text
+        - coordinateX
+        - coordinateY
     PostShortResponse:
       type: "object"
       properties:
@@ -584,6 +589,9 @@ components:
           type: "string"
           format: "uuid"
           description: "Id of the post"
+      required:
+        - postUserId
+        - postId
     Instant:
       type: "object"
       properties: { }
@@ -613,6 +621,14 @@ components:
           type: "number"
           format: "double"
           description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - createdAt
+        - updatedAt
+        - postId
+        - text
+        - coordinateX
+        - coordinateY
     FeedPostsResponse:
       type: "object"
       properties:
@@ -621,6 +637,8 @@ components:
           description: "Post's feed"
           items:
             $ref: "#/components/schemas/PostGetResponse"
+      required:
+        - posts
     PopularLocationPostsResponse:
       type: "object"
       properties:
@@ -629,6 +647,8 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/PostGetResponse"
+      required:
+        - posts
     PostUpdateRequest:
       type: "object"
       properties:
@@ -651,6 +671,12 @@ components:
           type: "number"
           format: "double"
           description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - postId
+        - text
+        - coordinateX
+        - coordinateY
     PostAttachmentResponse:
       type: "object"
       properties:
@@ -680,6 +706,14 @@ components:
           description: "Attachment file URL"
         createdAt:
           $ref: "#/components/schemas/Instant"
+      required:
+        - postId
+        - postUserId
+        - attachmentId
+        - contentType
+        - fileName
+        - url
+        - createdAt
     PostReactionRequest:
       type: "object"
       properties:
@@ -693,6 +727,9 @@ components:
           enum:
             - "LIKE"
             - "DISLIKE"
+      required:
+        - reactionUserId
+        - reactionType
     PostReactionShortResponse:
       type: "object"
       properties:
