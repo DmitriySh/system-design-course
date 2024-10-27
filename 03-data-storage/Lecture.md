@@ -4,15 +4,15 @@
 `Database` is a form of information organization where information is stored in a form convenient for operations: adding, updating, searching and deleting this information
 
 ## Database types
- - `Relational` = based on the relational model and data is structured in tables that contain rows and columns. \
+ - `Relational` = based on the relational model and data is structured in tables that contain rows and columns; \
    examples: PostgreSQL, MySQL; \
    features: relations between tables, indexes, ACID
-```sql
+```
 SELECT id, status
 FROM user_info
 WHERE id IN (20, 30);
 ```
- - `Column` = data is stored in columns rather than rows (NoSQL DB) \
+ - `Column` = data is stored in columns rather than rows; \
    examples: ClickHouse, Vertica; \
    features: high performance, horizontal scaling, data compression; \
 ```
@@ -20,7 +20,7 @@ SELECT id, status
 FROM user_info
 WHERE id IN (20, 30);
 ```
- - `Document-oriented` = designed for storing, retrieving and managing document-oriented information (NoSQL DB)
+ - `Document-oriented` = designed for storing, retrieving and managing document-oriented information; \
    examples: MongoDB, CouchDB; \
    features: schemaless, all data in one document, indexes, horizontal scaling
 ```
@@ -44,7 +44,8 @@ db.user_info.find(
 }
 ```
 
- - `Key-Value` = designed for storing, retrieving and managing associative arrays (key-value pairs) without complex data hierarchies and relationships
+ - `Key-Value` = designed for storing, retrieving and managing associative arrays (key-value pairs) without complex data hierarchies and relationships; \
+   examples: Redis, Memcached, Tarantool, RocksDB; \
 ?
 
 ## Database characteristics
