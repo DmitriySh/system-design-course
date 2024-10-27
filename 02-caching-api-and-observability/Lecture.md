@@ -248,7 +248,7 @@ Cache replacement algorithms:
 | | -> |0| -> |0| -> |0| -> [0] -> |0| -> |0| -> |0| -> |0|
 |7|    |7|    |7|    |7|    |7|    [3]    |3|    |3|    [5]
 ```
- - `Second chance / Clock` =  modification of the FIFO algorithm; \
+ - `Clock` = modification of the FIFO algorithm; \
    each object in the cache has 1 special bit of meta-info - object previously used (yes=1/no=0); \
    if replace object have 1 bit=no, then the object is deleted otherwise bit=yes is cleared to bit=no; \
    advantages: more efficient than LRU with a lower miss ratio
@@ -259,6 +259,9 @@ Cache replacement algorithms:
 |    | -> |0(1)| -> |0(1)| -> |0(1)| -> [0(1)] -> [0(0)] => |0(0)| -> [4(1)] -> |4(1)| -> |4(1)| -> [4(0)] => |4(0)|
 |7(1)|    |7(1)|    |7(1)|    |7(1)|    |7(1)|    [7(0)]    [3(1)]    |3(1)|    |3(1)|    |3(1)|    [3(0)]    |3(0)|
 ```
+ - `Second chance` = modification of the Clock algorithm; \
+   if bit=yes is cleared than the object will return in the queue as a new (it doesn't happen in the clock algorithm)
+
  - `2Q` = rule: object accessed once cannot yet be allowed to be cached; \
    the object that is accessed again may already be in the main cache. There are:
    - 2 FIFO queues: InFIFO --(evicted data)--> OutFIFO --(evicted data)--> /dev/null; OutFIFO --(accessed data)--> Main LRU; \
