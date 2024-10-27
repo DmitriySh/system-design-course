@@ -741,6 +741,9 @@ components:
           type: "string"
           format: "uuid"
           description: "Id of the post"
+      required:
+        - reactionId
+        - postId
     PostReactionResponse:
       type: "object"
       properties:
@@ -764,6 +767,12 @@ components:
             - "DISLIKE"
         createdAt:
           $ref: "#/components/schemas/Instant"
+      required:
+        - reactionId
+        - postId
+        - reactionUserId
+        - reactionType
+        - createdAt
     PostCommentCreateRequest:
       type: "object"
       properties:
@@ -774,6 +783,9 @@ components:
         comment:
           type: "string"
           description: "Comment text"
+      required:
+        - commentUserId
+        - comment
     PostCommentShortResponse:
       type: "object"
       properties:
@@ -785,6 +797,9 @@ components:
           type: "string"
           format: "uuid"
           description: "Id of the post"
+      required:
+        - commentId
+        - postId
     PostCommentResponse:
       type: "object"
       properties:
@@ -804,6 +819,12 @@ components:
           $ref: "#/components/schemas/Instant"
         updatedAt:
           $ref: "#/components/schemas/Instant"
+      required:
+        - commentId
+        - postId
+        - commentUserId
+        - createdAt
+        - updatedAt
     PostCommentUpdateRequest:
       type: "object"
       properties:
@@ -814,6 +835,9 @@ components:
         comment:
           type: "string"
           description: "Comment text"
+      required:
+        - commentUserId
+        - comment
     UserResponse:
       type: "object"
       properties:
@@ -835,6 +859,11 @@ components:
           description: "User email"
         createdAt:
           $ref: "#/components/schemas/Instant"
+      required:
+        - userId
+        - fullName
+        - email
+        - createdAt
     UserSubscriptionsResponse:
       type: "object"
       properties:
@@ -850,3 +879,7 @@ components:
           type: "string"
           format: "uuid"
           description: "User id who is subscribed to"
+      required:
+        - subscriptionId
+        - userId
+        - followingUserId
