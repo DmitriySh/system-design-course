@@ -10,7 +10,7 @@ tags:
 
 info:
   title: "Social network for travelers API"
-  description: "Current API describes interaction with Social network"
+  description: "Current REST API describes interaction with Social network"
   version: "1.0.0"
 
 paths:
@@ -81,6 +81,7 @@ paths:
           description: "Not Found"
         "500":
           description: "Internal Server Error"
+
   /api/posts/popular-locations:
     get:
       tags:
