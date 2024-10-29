@@ -215,24 +215,42 @@ paths:
         "500":
           description: "Internal Server Error"
 
-  /api/posts/{postId}/attachments:
+  /api/attachments:
     post:
       tags:
         - "attachments"
-      summary: "New post attachment"
-      description: "User make a new post attachment"
+      summary: "New attachment"
+      description: "User make a new attachment"
       parameters:
-        - name: "postId"
-          in: "path"
-          required: true
-          description: "Post id"
+        - name: "resourceId"
+          in: "query"
+          required: false
+          description: "Resource id that the attachment belongs to"
           schema:
             type: "string"
             format: "uuid"
+        - name: "resourceType"
+          in: "query"
+          required: false
+          description: "Resource type that the attachment belongs to"
+          schema:
+            type: "string"
+            enum:
+              - "POST"
+              - "OTHER"
+        - name: "attachmentType"
+          in: "query"
+          required: true
+          description: "Attachment type"
+          schema:
+            type: "string"
+            enum:
+              - "IMAGE"
+              - "OTHER"
         - name: "file"
           in: "query"
           required: true
-          description: "Post attachment files"
+          description: "Attachment file content"
           schema:
             type: "string"
             format: "binary"
@@ -242,11 +260,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostAttachmentResponse"
+                $ref: "#/components/schemas/AttachmentShortResponse"
+        "400":
+          description: "Bad Request"
         "404":
           description: "Not Found"
         "500":
           description: "Internal Server Error"
+
+  /api/posts/{postId}/attachments:
     get:
       tags:
         - "attachments"
@@ -268,7 +290,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/PostAttachmentResponse"
+                  $ref: "#/components/schemas/AttachmentResponse"
         "404":
           description: "Not Found"
         "500":
@@ -789,42 +811,68 @@ components:
         - text
         - coordinateX
         - coordinateY
-    PostAttachmentResponse:
+    AttachmentShortResponse:
       type: "object"
       properties:
-        postId:
+        resourceId:
           type: "string"
           format: "uuid"
-          description: "Id of the post"
-        postUserId:
-          type: "string"
-          format: "uuid"
-          description: "Id of the post author"
+          description: "Id of the resource"
         attachmentId:
           type: "string"
           format: "uuid"
-          description: "Attachment file id"
-        contentType:
-          type: "string"
-          description: "File content type"
-          enum:
-            - "IMAGE"
-            - "OTHER"
+          description: "Id of the attachment file"
         fileName:
           type: "string"
           description: "Attachment file name"
         url:
           type: "string"
           description: "Attachment file URL"
-        createdAt:
-          $ref: "#/components/schemas/Instant"
       required:
-        - postId
-        - postUserId
         - attachmentId
-        - contentType
         - fileName
         - url
+    AttachmentResponse:
+      type: "object"
+      properties:
+        resourceType:
+          type: "string"
+          description: "Resource type that the attachment belongs to"
+          enum:
+            - "POST"
+            - "OTHER"
+        userId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the attachment author"
+        attachmentType:
+          type: "string"
+          description: "Type of attachment file"
+          enum:
+            - "IMAGE"
+            - "OTHER"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        resourceId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the resource"
+        attachmentId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the attachment file"
+        fileName:
+          type: "string"
+          description: "Attachment file name"
+        url:
+          type: "string"
+          description: "Attachment file URL"
+      required:
+        - attachmentId
+        - fileName
+        - url
+        - userId
+        - attachmentType
         - createdAt
     PostReactionRequest:
       type: "object"
