@@ -117,7 +117,7 @@ Result:
 
  - `Wide-Column` = designed to store key-value data where the value consists of multiple columns and helps store related information; \
    examples: Cassandra, ScyllaDB; \
-   features: schemaless; high (horizontal) scalability and reliability; high performance; data compression; big data storage among different data centers
+   features: schemaless; big data storage among different data centers; high (horizontal) scalability and reliability; high performance; data compression;
 ```
 Query:
 SELECT id, status 
@@ -137,6 +137,10 @@ Result:
 ]
 ```
 
+ - `Graph` = designed to store data in graph structures with nodes, edges, and their properties. 
+   The relationships allow data in the store to be linked together directly and, in many cases, retrieved with one operation \
+   use cases: social links between users, modeling and analysis of transport traffic, define recommendations to order the goods on marketplaces; \
+   examples: Neo4j, Tigergraph, Stardog; \
 
 
 ## Database characteristics
