@@ -30,7 +30,7 @@ REST API endpoints:
     - `GET /api/posts/user-feeds?userId=id&limit=10&offset=0`
     - `GET /api/posts/popular-locations?coordinateX=1.0&coordinateY=1.5&radius=100&limit=10&offset=0`
 - attachments
-    - `POST /api/posts/{postId}/attachments`
+    - `POST /api/attachments?resourceId=3fa85f64-5717-4562-b3fc-2c963f66afa6&resourceType=POST&attachmentType=IMAGE`
     - `GET /api/posts/{postId}/attachments`
     - `DELETE /api/attachments/{attachmentId}`
 - reactions
