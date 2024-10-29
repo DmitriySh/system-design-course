@@ -422,8 +422,8 @@ paths:
     get:
       tags:
         - "comments"
-      summary: "Get post comments"
-      description: "User get all post comments"
+      summary: "Get post comments with pagination"
+      description: "User get all post comments with pagination"
       parameters:
         - name: "postId"
           in: "path"
@@ -432,6 +432,22 @@ paths:
           schema:
             type: "string"
             format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "100"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
       responses:
         "200":
           description: "OK"
