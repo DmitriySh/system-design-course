@@ -18,7 +18,7 @@ Homework 02: design a REST API by functional requirements
 ### REST API:
 
 Use [Open API](https://www.openapis.org) - formal standard for describing HTTP APIs. More details in the file
-`/api/rest_api.yml` you can view on the website https://editor.swagger.io
+[/api/rest_api.yml](https://github.com/DmitriySh/system-design-course/blob/main/02-caching-api-and-observability/api/rest_api.yml) you can view on the website https://editor.swagger.io
 
 REST API endpoints:
 
