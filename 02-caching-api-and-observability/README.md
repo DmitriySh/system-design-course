@@ -35,11 +35,11 @@ REST API endpoints:
     - `DELETE /api/attachments/{attachmentId}`
 - reactions
     - `POST /api/posts/{postId}/reactions`
-    - `GET /api/posts/{postId}/reactions`
+    - `GET /api/posts/{postId}/reactions?limit=10&offset=0`
     - `DELETE /api/reactions/{reactionId}`
 - comments
     - `POST /api/posts/{postId}/comments`
-    - `GET /api/posts/{postId}/comments`
+    - `GET /api/posts/{postId}/comments?limit=10&offset=0`
     - `PUT /api/comments/{commentId}`
     - `DELETE /api/comments/{commentId}`
 - subscriptions
