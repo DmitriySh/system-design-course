@@ -1,0 +1,1045 @@
+openapi: "3.0.0"
+
+tags:
+  - name: users
+  - name: posts
+  - name: reactions
+  - name: comments
+  - name: attachments
+  - name: subscriptions
+
+info:
+  title: "Social network for travelers API"
+  description: "Current REST API describes interaction with Social network"
+  version: "1.0.0"
+
+paths:
+  /api/posts:
+    post:
+      tags:
+        - "posts"
+      summary: "New post"
+      description: "User make a new post"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostShortResponse"
+        "400":
+          description: "Bad Request"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/user-feeds:
+    get:
+      tags:
+        - "posts"
+      summary: "Get feed of posts with pagination"
+      description: "Get user's feed of posts with pagination"
+      parameters:
+        - name: "userId"
+          in: "query"
+          required: true
+          description: "Id of the post author"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedPostsResponse"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/popular-locations:
+    get:
+      tags:
+        - "posts"
+      summary: "Get popular posts with pagination"
+      description: "Get popular users posts by coordinates location with pagination"
+      parameters:
+        - name: "coordinateX"
+          in: "query"
+          required: true
+          description: "The x-coordinate to determine the location"
+          schema:
+            type: "number"
+            format: "double"
+        - name: "coordinateY"
+          in: "query"
+          required: true
+          description: "The y-coordinate to determine the location"
+          schema:
+            type: "number"
+            format: "double"
+        - name: "radius"
+          in: "query"
+          required: false
+          description: "Radius of distance from coordinate point"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "100"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopularLocationPostsResponse"
+        "400":
+          description: "Bad Request"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/{postId}:
+    get:
+      tags:
+        - "posts"
+      summary: "Get post"
+      description: "Get user post by id"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostGetResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    put:
+      tags:
+        - "posts"
+      summary: "Update post"
+      description: "User update the post by id"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostShortResponse"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    delete:
+      tags:
+        - "posts"
+      summary: "Delete post"
+      description: "User delete post by id"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+        "500":
+          description: "Internal Server Error"
+
+  /api/attachments:
+    post:
+      tags:
+        - "attachments"
+      summary: "New attachment"
+      description: "User make a new attachment"
+      parameters:
+        - name: "resourceId"
+          in: "query"
+          required: false
+          description: "Resource id that the attachment belongs to"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "resourceType"
+          in: "query"
+          required: false
+          description: "Resource type that the attachment belongs to"
+          schema:
+            type: "string"
+            enum:
+              - "POST"
+              - "OTHER"
+        - name: "attachmentType"
+          in: "query"
+          required: true
+          description: "Attachment type"
+          schema:
+            type: "string"
+            enum:
+              - "IMAGE"
+              - "OTHER"
+        - name: "file"
+          in: "query"
+          required: true
+          description: "Attachment file content"
+          schema:
+            type: "string"
+            format: "binary"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttachmentShortResponse"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/{postId}/attachments:
+    get:
+      tags:
+        - "attachments"
+      summary: "Get post attachments"
+      description: "User get all post attachments"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AttachmentResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/attachments/{attachmentId}:
+    delete:
+      tags:
+        - "attachments"
+      summary: "Delete attachment"
+      description: "User delete attachment by id"
+      parameters:
+        - name: "attachmentId"
+          in: "path"
+          required: true
+          description: "Attachment file id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/{postId}/reactions:
+    post:
+      tags:
+        - "reactions"
+      summary: "New post reaction"
+      description: "User make a new post reaction"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostReactionRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostReactionShortResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    get:
+      tags:
+        - "reactions"
+      summary: "Get post reactions with pagination"
+      description: "User get all post reactions with pagination"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "100"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostReactionResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/reactions/{reactionId}:
+    delete:
+      tags:
+        - "reactions"
+      summary: "Delete reaction"
+      description: "User delete reaction by id"
+      parameters:
+        - name: "reactionId"
+          in: "path"
+          required: true
+          description: "Reaction id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+        "500":
+          description: "Internal Server Error"
+
+  /api/posts/{postId}/comments:
+    post:
+      tags:
+        - "comments"
+      summary: "New post comment"
+      description: "User make a new post comment"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostCommentCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCommentShortResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    get:
+      tags:
+        - "comments"
+      summary: "Get post comments with pagination"
+      description: "User get all post comments with pagination"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          description: "Post id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "100"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostCommentResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/comments/{commentId}:
+    put:
+      tags:
+        - "comments"
+      summary: "Update comment"
+      description: "User update comment by id"
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          description: "Comment id"
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCommentUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCommentShortResponse"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    delete:
+      tags:
+        - "comments"
+      summary: "Delete comment"
+      description: "User delete comment by id"
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          description: "Comment id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+        "500":
+          description: "Internal Server Error"
+
+  /api/users/{userId}:
+    get:
+      tags:
+        - "users"
+      summary: "Get user info"
+      description: "Get user by id"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/users:
+    get:
+      tags:
+        - "users"
+      summary: "Get users by ids"
+      description: "Get user profiles by ids"
+      parameters:
+        - name: "userIds"
+          in: "query"
+          required: true
+          description: "User ids"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+              format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/users/{userId}/subscriptions:
+    get:
+      tags:
+        - "subscriptions"
+      summary: "Get user subscriptions with pagination"
+      description: "Get all user subscriptions by id with pagination"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "limit"
+          in: "query"
+          required: false
+          description: "The limit of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "offset"
+          in: "query"
+          required: false
+          description: "The offset of records"
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserSubscriptionsResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+    post:
+      tags:
+        - "subscriptions"
+      summary: "Subscribe to a user"
+      description: "User subscribes to another user"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          description: "User id"
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "followingUserId"
+          in: "query"
+          required: true
+          description: "User id being followed"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSubscriptionsResponse"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+
+  /api/subscriptions/{subscriptionId}:
+    delete:
+      tags:
+        - "subscriptions"
+      summary: "Delete user subscription"
+      description: "Delete user subscription by id"
+      parameters:
+        - name: "subscriptionId"
+          in: "path"
+          required: true
+          description: "Subscription id between users"
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+        "500":
+          description: "Internal Server Error"
+
+components:
+  schemas:
+    PostCreateRequest:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post author"
+        text:
+          type: "string"
+          description: "The content of the post"
+        coordinateX:
+          type: "number"
+          format: "double"
+          description: "The location x-coordinate of the place associated with this post"
+        coordinateY:
+          type: "number"
+          format: "double"
+          description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - text
+        - coordinateX
+        - coordinateY
+    PostShortResponse:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post author"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+      required:
+        - postUserId
+        - postId
+    Instant:
+      type: "object"
+      properties: { }
+    PostGetResponse:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post author"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        updatedAt:
+          $ref: "#/components/schemas/Instant"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+        text:
+          type: "string"
+          description: "The content of the post"
+        coordinateX:
+          type: "number"
+          format: "double"
+          description: "The location x-coordinate of the place associated with this post"
+        coordinateY:
+          type: "number"
+          format: "double"
+          description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - createdAt
+        - updatedAt
+        - postId
+        - text
+        - coordinateX
+        - coordinateY
+    FeedPostsResponse:
+      type: "object"
+      properties:
+        posts:
+          type: "array"
+          description: "Post's feed"
+          items:
+            $ref: "#/components/schemas/PostGetResponse"
+      required:
+        - posts
+    PopularLocationPostsResponse:
+      type: "object"
+      properties:
+        posts:
+          description: "Popular posts"
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostGetResponse"
+      required:
+        - posts
+    PostUpdateRequest:
+      type: "object"
+      properties:
+        postUserId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post author"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+        text:
+          type: "string"
+          description: "The content of the post"
+        coordinateX:
+          type: "number"
+          format: "double"
+          description: "The location x-coordinate of the place associated with this post"
+        coordinateY:
+          type: "number"
+          format: "double"
+          description: "The location y-coordinate of the place associated with this post"
+      required:
+        - postUserId
+        - postId
+        - text
+        - coordinateX
+        - coordinateY
+    AttachmentShortResponse:
+      type: "object"
+      properties:
+        resourceId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the resource"
+        attachmentId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the attachment file"
+        fileName:
+          type: "string"
+          description: "Attachment file name"
+        url:
+          type: "string"
+          description: "Attachment file URL"
+      required:
+        - attachmentId
+        - fileName
+        - url
+    AttachmentResponse:
+      type: "object"
+      properties:
+        resourceType:
+          type: "string"
+          description: "Resource type that the attachment belongs to"
+          enum:
+            - "POST"
+            - "OTHER"
+        userId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the attachment author"
+        attachmentType:
+          type: "string"
+          description: "Type of attachment file"
+          enum:
+            - "IMAGE"
+            - "OTHER"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        resourceId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the resource"
+        attachmentId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the attachment file"
+        fileName:
+          type: "string"
+          description: "Attachment file name"
+        url:
+          type: "string"
+          description: "Attachment file URL"
+      required:
+        - attachmentId
+        - fileName
+        - url
+        - userId
+        - attachmentType
+        - createdAt
+    PostReactionRequest:
+      type: "object"
+      properties:
+        reactionUserId:
+          type: "string"
+          format: "uuid"
+          description: "ID of the author who placed the reaction"
+        reactionType:
+          type: "string"
+          description: "Reaction type"
+          enum:
+            - "LIKE"
+            - "DISLIKE"
+      required:
+        - reactionUserId
+        - reactionType
+    PostReactionShortResponse:
+      type: "object"
+      properties:
+        reactionId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the reaction"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+      required:
+        - reactionId
+        - postId
+    PostReactionResponse:
+      type: "object"
+      properties:
+        reactionId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the reaction"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+        reactionUserId:
+          type: "string"
+          format: "uuid"
+          description: "ID of the author who placed the reaction"
+        reactionType:
+          type: "string"
+          description: "Reaction type"
+          enum:
+            - "LIKE"
+            - "DISLIKE"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+      required:
+        - reactionId
+        - postId
+        - reactionUserId
+        - reactionType
+        - createdAt
+    PostCommentCreateRequest:
+      type: "object"
+      properties:
+        commentUserId:
+          type: "string"
+          format: "uuid"
+          description: "ID of the author who wrote the comment"
+        comment:
+          type: "string"
+          description: "Comment text"
+      required:
+        - commentUserId
+        - comment
+    PostCommentShortResponse:
+      type: "object"
+      properties:
+        commentId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the comment"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+      required:
+        - commentId
+        - postId
+    PostCommentResponse:
+      type: "object"
+      properties:
+        commentId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the comment"
+        postId:
+          type: "string"
+          format: "uuid"
+          description: "Id of the post"
+        commentUserId:
+          type: "string"
+          format: "uuid"
+          description: "ID of the author who wrote the comment"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        updatedAt:
+          $ref: "#/components/schemas/Instant"
+      required:
+        - commentId
+        - postId
+        - commentUserId
+        - createdAt
+        - updatedAt
+    PostCommentUpdateRequest:
+      type: "object"
+      properties:
+        commentUserId:
+          type: "string"
+          format: "uuid"
+          description: "ID of the author who wrote the comment"
+        comment:
+          type: "string"
+          description: "Comment text"
+      required:
+        - commentUserId
+        - comment
+    UserResponse:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          format: "uuid"
+          description: "User id"
+        fullName:
+          type: "string"
+          description: "User full name"
+        description:
+          type: "string"
+          description: "Brief information about the user"
+        iconUrl:
+          type: "string"
+          description: "User profile icon"
+        email:
+          type: "string"
+          description: "User email"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+      required:
+        - userId
+        - fullName
+        - email
+        - createdAt
+    UserSubscriptionsResponse:
+      type: "object"
+      properties:
+        subscriptionId:
+          type: "string"
+          format: "uuid"
+          description: "Subscription id between users"
+        userId:
+          type: "string"
+          format: "uuid"
+          description: "User id"
+        followingUserId:
+          type: "string"
+          format: "uuid"
+          description: "User id who is subscribed to"
+      required:
+        - subscriptionId
+        - userId
+        - followingUserId
