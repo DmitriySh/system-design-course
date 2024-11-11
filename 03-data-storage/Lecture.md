@@ -115,6 +115,10 @@ Result:
 ]
 ```
 
+- distributed Key-Value storage of configuration and other service information; \
+  examples: ZooKeeper, etcd
+
+
  - `Wide-Column` = designed to store key-value data where the value consists of multiple columns and helps store related information; \
    examples: Cassandra, ScyllaDB; \
    features: schemaless; big data storage among different data centers; high (horizontal) scalability and reliability; high performance; data compression;
@@ -139,9 +143,31 @@ Result:
 
  - `Graph` = designed to store data in graph structures with nodes, edges, and their properties. 
    The relationships allow data in the store to be linked together directly and, in many cases, retrieved with one operation \
-   use cases: social links between users, modeling and analysis of transport traffic, define recommendations to order the goods on marketplaces; \
    examples: Neo4j, Tigergraph, Stardog; \
+   use cases: social links between users, modeling and analysis of transport traffic, define recommendations to order the goods on marketplaces; \
+   features: fast search in relations; relations are materialized and consuming a RAM opposed to RDBMS where relations building at runtime and consuming CPU; \
+```
+Query:
+MATCH (u:UserInfo)
+WHERE u.id IN (20, 30)
+RETURN u.id, u.status;
 
+Result:
+[
+  {
+    "id": 20,
+    "status": "FIRST"
+  },
+  {
+    "id": 30,
+    "status": "SECOND"
+  }
+]
+```
+
+- `Time series` = designed to collect data sequentially at regular intervals; \
+  examples: InfluxDB, Prometheus, VictoriaMetrics; \
+  use cases: currency quotes, CPU/RAM load, transport movement telemetry, server request statistics; \
 
 ## Database characteristics
 
