@@ -7,7 +7,7 @@ adding, updating, searching and deleting this information.
 ## Database types
  - `Relational` = based on the relational model and data is structured in tables that contain rows and columns; \
    examples: PostgreSQL, MySQL; \
-   features: relations between tables, indexes, ACID
+   features: relations between tables; indexes; transactions; ACID; OLTP
 ```
 Query:
 SELECT id, status
@@ -23,7 +23,7 @@ Result:
 
  - `Column` = data is stored in columns rather than rows; \
    examples: ClickHouse, Vertica; \
-   features: stores data in separate columns; faster search and extraction, horizontal scaling, data compression; OLAP \
+   features: stores data in separate columns; faster search and extraction; horizontal scaling; data compression; OLAP
 ```
 Query:
 SELECT id, status
@@ -38,7 +38,7 @@ id	status
 
  - `Document-oriented` = designed for storing, retrieving and managing document-oriented information; \
    examples: MongoDB, CouchDB; \
-   features: schemaless, all data in one document, horizontal scaling
+   features: schemaless; all data in one document; horizontal scaling
 ```
 Query:
 db.user_info.find( 
@@ -61,7 +61,7 @@ Result:
 
  - `Fulltext search engine` = designed for full-text searching documents (json objects) by their content; \
    examples: Elasticsearch, Sphinx; \
-   features: horizontal scaling, powerful full-text index searching; fast reading and low recording
+   features: horizontal scaling; powerful full-text index searching; fast reading and low recording
 ```
 Query:
 {
@@ -97,7 +97,7 @@ Result:
 
  - `Key-Value` = designed to store, retrieving and managing associative arrays (key-value pairs) without complex data hierarchies and relationships; \
    examples: Redis, Memcached, Tarantool, RocksDB; \
-   features: simple hash index; horizontal scaling, high performance, to cache data in memory
+   features: simple hash index; horizontal scaling; high performance; to cache data in memory
 ```
 Query:
 HMGET user_info:20 user_info:30 id status
@@ -121,7 +121,7 @@ Result:
 
  - `Wide-Column` = designed to store key-value data where the value consists of multiple columns and helps store related information; \
    examples: Cassandra, ScyllaDB; \
-   features: schemaless; big data storage among different data centers; high (horizontal) scalability and reliability; high performance; data compression;
+   features: schemaless; big data storage among different data centers; high (horizontal) scalability and reliability; high performance; data compression
 ```
 Query:
 SELECT id, status 
@@ -145,7 +145,7 @@ Result:
    The relationships allow data in the store to be linked together directly and, in many cases, retrieved with one operation \
    examples: Neo4j, Tigergraph, Stardog; \
    use cases: social links between users, modeling and analysis of transport traffic, define recommendations to order the goods on marketplaces; \
-   features: fast search in relations; relations are materialized and consuming a RAM opposed to RDBMS where relations building at runtime and consuming CPU; \
+   features: fast search in relations; relations are materialized and consuming a RAM opposed to RDBMS where relations building at runtime and consuming CPU
 ```
 Query:
 MATCH (u:UserInfo)
@@ -165,11 +165,55 @@ Result:
 ]
 ```
 
-- `Time series` = designed to collect data sequentially at regular intervals; \
+- `Time series` = designed to collect data sequentially at regular intervals; time series consist of: timestamp and linked data \
   examples: InfluxDB, Prometheus, VictoriaMetrics; \
   use cases: currency quotes, CPU/RAM load, transport movement telemetry, server request statistics; \
+  features: use compression and optimized storage formats in contrast to RDBMS; archive or delete old data
+```
+t(С)
+ ^
+ |            .
+ |   ...     .
+ | .    .   .
+ |.      ...
+ ----------------> time
+
+    timestamp     | temrepature 
+------------------+-------------
+ 10.01.2022 17:00 |    37.2
+ 10.01.2022 17:01 |    38.1
+ 10.01.2022 17:02 |    40.0
+```
+
+- `Blobe Store` = platform, provides a unified approach to object/block/file storage (binary large object) \
+  examples: Ceph, AWS S3; \
+  features: vertical and horizontal scaling; self-healing and self-managing storage nodes
+
 
 ## Database characteristics
+How to choose DB?
+- transactions
+- data format
+- your skills
+- data access methods
+- community and technology maturity
+- frequency to change a data format
+
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) (Online Analytical Processing) = organizing the database 
+characterized by long-time transactions and much more complex queries to huge amounts of data for the purpose of business intelligence or reporting. \
+[OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) (Online Transaction Processing) = organizing the database works 
+with a large flow of small-time transactions and responds immediately to user requests.
+```
+  analytic requests
+              |
+              |
+              ⌵
+[OLTP] ---> [OLAP]
+  ^
+  |
+  |
+client requests
+```
 
 
 ## Indexes
