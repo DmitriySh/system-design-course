@@ -196,7 +196,6 @@ $ rados -p poolName put cephFileName ./file.txt
 $ aws s3 cp ./file.txt s3://bucketName/file.txt
 ```
 
-## Database characteristics
 How to choose DB?
 - transactions (if you need ACID for working with data)
 - format defines the storage type
@@ -216,6 +215,7 @@ Examples:
 - need store and seek user's posts and use full-text search, and caching most popular posts --> **(search engine, column, key-value and relational databases)**
 
 
+## Database characteristics
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) (Online Analytical Processing) = organizing the
 database characterized by long-time transactions and much more complex queries to huge amounts of data for the purpose of
 business intelligence or reporting. OLAP workload creates by batching updates and table scans. \
@@ -255,6 +255,17 @@ analytic requests
       |
 client requests
 ```
+
+`In-memory database` = is a database management system that primarily relies on RAM/NVRAM; \
+features: faster than disk-optimized databases; internal optimization algorithms are simpler and execute fewer CPU instructions
+
+`Persistent database` = 
+
+`Embedded database` =
+
+`Single-file database` =
+
+`Append-only database` = 
 
 
 
