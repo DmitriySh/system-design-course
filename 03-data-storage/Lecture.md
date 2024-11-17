@@ -218,13 +218,13 @@ Examples:
 ## Database characteristics
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) (Online Analytical Processing) = organizing the
 database characterized by long-time transactions and much more complex queries to huge amounts of data for the purpose of
-business intelligence or reporting. OLAP workload creates by batching updates and table scans. \
-Examples: ClickHouse, DuckDB, Druid
+business intelligence or reporting. OLAP workload creates by batching updates and table scans; \
+examples: ClickHouse, DuckDB, Druid
 
 [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) (Online Transaction Processing) = organizing the
 database works with a large flow of small-time transactions and responds immediately to user requests. 
-OLTP workload creates by CRUD operations. \
-Examples: PostgreSQL, MySQL, MongoDB, Redis
+OLTP workload creates by CRUD operations; \
+examples: PostgreSQL, MySQL, MongoDB, Redis
 
 `OLAP` database stores duplicate data from `OLTP` for analytics
 ```
@@ -240,10 +240,10 @@ client requests
 ```
 
 [HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing) (hybrid transaction/analytics processing) = designed for
-integration both analytics and transactions without duplicating data into a separate database, instant applying modified data and use it in reports. \
-Examples: Greenplum, Tarantool Column Store. \
-Features: `HTAP` uses memory and column type of storage combined with row-based type. \
-Use cases: the buyer could immediately receive new relevant offers based on past purchases
+integration both analytics and transactions without duplicating data into a separate database, instant applying modified data and use it in reports; \
+examples: Greenplum, Tarantool Column Store; \
+features: `HTAP` uses memory and column type of storage combined with row-based type; \
+use cases: the buyer could immediately receive new relevant offers based on past purchases
 ```
 analytic requests
       |
@@ -257,11 +257,18 @@ client requests
 ```
 
 `In-memory database` = is a database management system that primarily relies on RAM/NVRAM; \
-features: faster than disk-optimized databases; internal optimization algorithms are simpler and execute fewer CPU instructions
+examples: Redis, Memcached, Hazelcast, Ignite; \
+features: faster than disk-optimized databases; internal optimization algorithms are simpler and execute fewer CPU instructions; \
+use cases: if response time is critical (telecommunications network equipment, stock exchange or payment systems)
 
-`Persistent database` = 
+`Persistent database` = is a database management system that primarily relies on storage media that are designed 
+to retain data even when the power is turned off (HDD, SSD, Flash memory); \
+examples: PostgreSQL, MongoDB, ClickHouse; \
+features: handle large amounts of data; can be scaled up or down; more complex to design and implement
 
-`Embedded database` =
+`Embedded database` = is a database management system that completely embedded within a host application process; \
+examples: H2, SQLite, DuckDB, Derby
+features: portable and not require a separate server; can be integrated into IoT devices
 
 `Single-file database` =
 
