@@ -267,10 +267,12 @@ examples: PostgreSQL, MongoDB, ClickHouse; \
 features: handle large amounts of data; can be scaled up or down; more complex to design and implement
 
 `Embedded database` = is a database management system that completely embedded within a host application process; \
-examples: H2, SQLite, DuckDB, Derby
+examples: H2, SQLite, DuckDB, Derby; \
 features: portable and not require a separate server; can be integrated into IoT devices
 
-`Single-file database` =
+`Single-file database` = is a database management system that stores the structure and all data in one file on the file system; \
+examples: H2, SQLite, DuckDB; \
+features: simplifies management, distribution and deployment of database
 
 `Append-only database` = 
 
