@@ -274,7 +274,9 @@ features: portable and not require a separate server; can be integrated into IoT
 examples: H2, SQLite, DuckDB; \
 features: simplifies management, distribution and deployment of database
 
-`Append-only database` = 
+`Append-only database` =  is a database management system that storage can only append new data and can't modify/delete old; \
+examples: LSM-Tree for indexes; \
+features: implement immutable objects, maximizing concurrency, all writes go to the end of the file
 
 
 
