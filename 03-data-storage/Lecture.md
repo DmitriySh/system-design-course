@@ -281,6 +281,32 @@ features: implement immutable objects, maximizing concurrency, all writes go to 
 
 
 ## Indexes
+`Index` = is an object into DBMS (data structure). \
+ - advantages: 
+   - main goal is an improves the speed of data retrieval operations
+ - disadvantages: 
+   - each insert/update/delete takes time to normalize the index data structure;
+   - use additional memory;
+   - complicates the query execution plan
+
+`Index Selectivity` = is the percentage of rows in a table that have the same value for the indexed key. \
+If selectivity is **low/poor** (get _a lot of records_), database will prefer to perform a **full scan**. \
+If selectivity is **high** (get _several records or one_), database will prefer to use the **index scan**.
+
+```
+(selected_rows / total_rows) * 100 = percent_selectivity
+
+example 1:
+selected_rows = 5
+total_rows = 31 591
+percent_selectivity = (5 / 31591) * 100 = 0,016%
+
+example 2:
+selected_rows = 15 350
+total_rows = 31 591
+percent_selectivity = (15350 / 31591) * 100 = 48,59%
+```
+ 
 
 ## Transactions
 
