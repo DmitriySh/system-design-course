@@ -306,7 +306,26 @@ selected_rows = 15 350
 total_rows = 31 591
 percent_selectivity = (15350 / 31591) * 100 = 48,59%
 ```
- 
+
+Data structure:
+ - `b-tree` (balanced tree) = is a tree which satisfies the following properties
+   - consist of: root node, internal nodes and leaves;
+   - the root node has at least 2 children unless it is a leaf;
+   - every internal node has at least `(m/2)` children, at most `(m)` children;
+   - all leaves are at the same depth from the root;
+   - number of keys in an internal node `(m/2) − 1`
+
+B-tree time complexity: O(log n) \
+B-tree history: were invented in Boeing Research Labs, for the purpose of efficiently managing index pages 
+for large random-access files because only small chunks of the tree could fit in main memory; \
+B-tree features: disk reads by blocks in 4Kb/8Kb, and this could be a page with nodes and key values; 
+data structure specially designed to work efficiently with disk memory and minimize input-output operations
+
+
+ - `hash index` = ?
+
+
+
 
 ## Transactions
 
