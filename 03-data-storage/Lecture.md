@@ -309,20 +309,77 @@ percent_selectivity = (15350 / 31591) * 100 = 48,59%
 
 Data structure:
  - `b-tree` (balanced tree) = is a tree which satisfies the following properties
+   - complexity: O(log n)
    - consist of: root node, internal nodes and leaves;
    - the root node has at least 2 children unless it is a leaf;
+   - the data in the index is sorted in ascending order;
    - every internal node has at least `(m/2)` children, at most `(m)` children;
    - all leaves are at the same depth from the root;
    - number of keys in an internal node `(m/2) − 1`
+   - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
 
-B-tree time complexity: O(log n) \
 B-tree history: were invented in Boeing Research Labs, for the purpose of efficiently managing index pages 
 for large random-access files because only small chunks of the tree could fit in main memory; \
 B-tree features: disk reads by blocks in 4Kb/8Kb, and this could be a page with nodes and key values; 
-data structure specially designed to work efficiently with disk memory and minimize input-output operations
+data structure specially designed to work efficiently with disk memory and minimize input-output operations. \
+B-tree has fewer node transitions than a binary tree which reduces the number of disk access needed to search a key.
+```
+            --------------[500]--------------
+            |                               |
+            ⌵                               ⌵
+   -----[20, 150]------           -------[20, 150]-------
+   |        |         |           |          |          |
+   ⌵        ⌵         ⌵           ⌵          ⌵          ⌵
+[5, 15] [25, 100] [175, 450]  [560, 590] [650, 775] [905, 1020]
+```
 
 
- - `hash index` = ?
+ - `hash index` (hash table) = is an associative array (dictionary or map) that maps keys to values:
+   - complexity: O(1)
+   - effective for operations: `=`
+   - uses a hash function to compute an index by key into an array of buckets and save/get the value into/from;
+   - key value is not stored in index
+   - hash collisions is possible, where the hash function generates the same index for more than one key (bucket 1 divides to bucket 1.1, bucket 1.2);
+   - stores a 32-bit hash code
+   - array consumes memory and grows in size up to x2
+
+Hash index history: (january 1953) Hans Peter Luhn wrote an internal IBM memorandum that used hashing with chaining;
+open addressing was proposed by A. D. Linh, building on Luhn's memorandum
+Hash index features: is stored on disk; all the necessary information is laid out on the pages (metapage, bucketpage, overflow page, bitmap page)
+```
+hash(key) => index
+
+index =     0    1   2     3    ... N
+value =  [drink][  ][  ][orange]...[  ]
+```
+
+
+- `bitmap index` = is a technique for indexing scalar data
+    - complexity: O(n)
+    - fits into memory (mostly)
+    - bitmap length = number of rows in the table
+    - separate bitmap for each column
+    - query execution is combined using the bitwise operators AND, OR and NOT
+
+Bitmap index features: if value is present in the row, set `1` to the desired bit or `0` otherwise
+
+
+- `spatial grid index` = 
+
+
+- `reversed index` =
+
+
+- `functional index` = 
+
+
+- `sparse index` = 
+
+
+- `include index` =
+
+
+- `cluster index` = 
 
 
 
