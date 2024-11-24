@@ -197,12 +197,12 @@ $ aws s3 cp ./file.txt s3://bucketName/file.txt
 ```
 
 How to choose DB?
-- transactions (if you need ACID for working with data)
-- format defines the storage type
-- your own skills to work with
-- data access methods
-- community and technology maturity
-- frequency to change a data format
+- transactions (if you need ACID for working with data);
+- format defines the storage type;
+- your own skills to work with;
+- data access methods;
+- community and technology maturity;
+- frequency to change a data format;
 
 You are making your own opinion about the type of database, and you need to test your proposal. \
 Examples:
@@ -287,7 +287,7 @@ features: implement immutable objects, maximizing concurrency, all writes go to 
  - disadvantages: 
    - each insert/update/delete takes time to normalize the index data structure;
    - use additional memory;
-   - complicates the query execution plan
+   - complicates the query execution plan;
 
 `Index Selectivity` = is the percentage of rows in a table that have the same value for the indexed key. \
 If selectivity is **low/poor** (get _a lot of records_), database will prefer to perform a **full scan**. \
@@ -309,13 +309,13 @@ percent_selectivity = (15350 / 31591) * 100 = 48,59%
 
 Data structure:
  - `b-tree` (balanced tree) = is a tree which satisfies the following properties
-   - complexity: O(log n)
+   - complexity: O(log n);
    - consist of: root node, internal nodes and leaves;
    - the root node has at least 2 children unless it is a leaf;
    - the data in the index is sorted in ascending order;
    - every internal node has at least `(m/2)` children, at most `(m)` children;
    - all leaves are at the same depth from the root;
-   - number of keys in an internal node `(m/2) − 1`
+   - number of keys in an internal node `(m/2) − 1`;
    - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
 
 B-tree history: were invented in Boeing Research Labs, for the purpose of efficiently managing index pages 
@@ -335,13 +335,13 @@ B-tree has fewer node transitions than a binary tree which reduces the number of
 
 
  - `hash index` (hash table) = is an associative array (dictionary or map) that maps keys to values:
-   - complexity: O(1)
-   - effective for operations: `=`
+   - complexity: O(1);
+   - effective for operations: `=`;
    - uses a hash function to compute an index by key into an array of buckets and save/get the value into/from;
-   - key value is not stored in index
+   - key value is not stored in index;
    - hash collisions is possible, where the hash function generates the same index for more than one key (bucket 1 divides to bucket 1.1, bucket 1.2);
-   - stores a 32-bit hash code
-   - array consumes memory and grows in size up to x2
+   - stores a 32-bit hash code;
+   - array consumes memory and grows in size up to x2;
 
 Hash index history: (january 1953) Hans Peter Luhn wrote an internal IBM memorandum that used hashing with chaining;
 open addressing was proposed by A. D. Linh, building on Luhn's memorandum
@@ -355,13 +355,56 @@ value =  [drink][  ][  ][orange]...[  ]
 
 
 - `bitmap index` = is a technique for indexing scalar data
-    - complexity: O(n)
-    - fits into memory (mostly)
-    - bitmap length = number of rows in the table
-    - separate bitmap for each column
-    - query execution is combined using the bitwise operators AND, OR and NOT
+    - complexity: O(n);
+    - bit is a basic unit of information (0/1 or No/Yes), 
+    - fits into memory (mostly);
+    - useful for complex select queries involving multiple conditions that can benefit from combining to bitmap;
+    - bitmap length = number of rows in the table;
+    - separate bitmap for each column;
+    - useful for columns with a low cardinality: if value is present in the row, set `1` to the desired bit or `0` otherwise;
+    - query execution is combined using the bitwise operators AND, OR and NOT;
+    - effective: 
 
-Bitmap index features: if value is present in the row, set `1` to the desired bit or `0` otherwise
+Advantages: can speed up query performance, especially when dealing with large datasets and complex queries that involve multiple filters. \
+Disadvantages: can slow down write performance on insert, update, or delete operations; \
+Bitmap index note: PostgreSQL doesn't support bitmap indexes directly as a separate index type. \
+Instead, it uses bitmap index scans internally when executing certain types of queries, particularly those that involve multiple conditions. 
+```
+Dating site: select a man, non-smoker, non-drinker, has a dog, single
+
+[user_id][ man ][smoking][drinking][has_dog][single]
+   126   | true | true   |  true   | false  | true |
+   127   | true | false  |  false  | true   | true |
+   128   | false| false  |  true   | false  | true |
+
+CREATE INDEX idx_example ON table_name USING bitmap (column_name);   
+bitmap index man:      110
+bitmap index smoking:  100
+bitmap index drinking: 101
+bitmap index has_dog:  010
+bitmap index single:   111
+
+
+SELECT * 
+FROM user 
+WHERE man = true and smoking = false and drinking = false and has_dog = true and single = true
+;
+-- search row: 10011
+
+vertical indexes
+man:      110
+   and
+smoking:  100
+   and
+drinking: 101
+   and
+has_dog:  010
+   and
+single:   111
+=============
+2nd row has to be retrieved as a result:   010 => user_id=127
+```
+
 
 
 - `spatial grid index` = 
