@@ -354,75 +354,102 @@ value =  [drink][  ][  ][orange]...[  ]
 ```
 
 
-- `bitmap index` = is a technique for indexing scalar data
-    - complexity: O(n);
-    - bit is a basic unit of information (0/1 or No/Yes), 
-    - fits into memory (mostly);
-    - useful for complex select queries involving multiple conditions that can benefit from combining to bitmap;
-    - bitmap length = number of rows in the table;
-    - separate bitmap for each column;
-    - useful for columns with a low cardinality: if value is present in the row, set `1` to the desired bit or `0` otherwise;
-    - query execution is combined using the bitwise operators AND, OR and NOT;
-    - effective: 
+ - `bitmap index` = is a technique for indexing scalar data
+     - complexity: O(n);
+     - bit is a basic unit of information (0/1 or No/Yes), 
+     - fits into memory (mostly);
+     - useful for complex select queries involving multiple conditions that can benefit from combining to bitmap;
+     - bitmap length = number of rows in the table;
+     - separate bitmap for each column;
+     - useful for columns with a low cardinality: if value is present in the row, set `1` to the desired bit or `0` otherwise;
+     - query execution is combined using the bitwise operators AND, OR and NOT;
 
-Advantages: can speed up query performance, especially when dealing with large datasets and complex queries that involve multiple filters. \
+Advantages: can quickly determine which rows satisfy the query by performing a bitwise operation 
+on the corresponding bitmaps, especially when dealing with large datasets and complex queries that involve multiple filters. \
 Disadvantages: can slow down write performance on insert, update, or delete operations; \
 Bitmap index note: PostgreSQL doesn't support bitmap indexes directly as a separate index type. \
 Instead, it uses bitmap index scans internally when executing certain types of queries, particularly those that involve multiple conditions. 
 ```
-Dating site: select a man, non-smoker, non-drinker, has a dog, single
+Dating site: select a man, non-smoker, non-drinker, has a medium dog, single
 
-[user_id][ man ][smoking][drinking][has_dog][single]
-   126   | true | true   |  true   | false  | true |
-   127   | true | false  |  false  | true   | true |
-   128   | false| false  |  true   | false  | true |
+[user_id][ gender ][smoking][drinking][  dog  ][single]
+   101   | man    | true    |  true   | small  | true |
+   102   | man    | false   |  false  | medium | true |
+   103   | woman  | false   |  true   | big    | true |
+   104   | woman  | false   |  true   | null   | false|
 
-CREATE INDEX idx_example ON table_name USING bitmap (column_name);   
-bitmap index man:      110
-bitmap index smoking:  100
-bitmap index drinking: 101
-bitmap index has_dog:  010
-bitmap index single:   111
+CREATE INDEX idx_example ON table_name USING bitmap (column_name);  
 
+gender value      Bitmap Index
+-------------     ------------
+man            =  1100
+woman          =  0011
+
+smoking value     Bitmap Index
+-------------     ------------
+true            =  1000
+false           =  0111
+
+drinking value    Bitmap Index
+-------------     ------------
+true            =  1011
+false           =  0100
+
+dog value         Bitmap Index
+-------------     ------------
+small           =  1000
+medium          =  0100
+big             =  0010
+null            =  0001
+
+single value      Bitmap Index
+-------------     ------------
+true            =  1110
+false           =  0001
 
 SELECT * 
 FROM user 
-WHERE man = true and smoking = false and drinking = false and has_dog = true and single = true
+WHERE gender = 'man' and smoking = false and drinking = false and dog = 'medium' and single = true
 ;
--- search row: 10011
 
-vertical indexes
-man:      110
-   and
-smoking:  100
-   and
-drinking: 101
-   and
-has_dog:  010
-   and
-single:   111
+gender = 'man'       =>  1100
+                         and
+smoking = false      =>  0111
+                         and
+drinking = false     =>  0100
+                         and
+dog = 'small'        =>  0100
+                         and
+single = true        =>  0100
+-------------            -----
+result               =>  0100
 =============
-2nd row has to be retrieved as a result:   010 => user_id=127
+Row with user_id=102 has to be retrieved as a result
+
+[user_id][ gender ][smoking][drinking][  dog  ][single]
+   102   | man    | false   |  false  | medium | true |
 ```
 
 
-
-- `spatial grid index` = 
-
-
-- `reversed index` =
-
-
-- `functional index` = 
+ - `spatial grid index` = is a structure for organizing and searching for spatial objects in the appropriate grid cells; \
+   - complexity: ?;
+   - it can quickly identify close values in 2 or more dimensions;
+   - implementation: R-Tree index
 
 
-- `sparse index` = 
+ - `reversed index` =
 
 
-- `include index` =
+ - `functional index` = 
 
 
-- `cluster index` = 
+ - `sparse index` = 
+
+
+ - `include index` =
+
+
+ - `cluster index` = 
 
 
 
