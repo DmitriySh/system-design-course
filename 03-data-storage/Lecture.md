@@ -418,7 +418,7 @@ smoking = false      =>  0111
                          and
 drinking = false     =>  0100
                          and
-dog = 'medium'       => 0100
+dog = 'medium'       =>  0100
                          and
 single = true        =>  1110
 =============        ========
