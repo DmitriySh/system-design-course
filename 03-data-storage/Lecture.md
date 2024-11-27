@@ -418,12 +418,12 @@ smoking = false      =>  0111
                          and
 drinking = false     =>  0100
                          and
-dog = 'small'        =>  0100
+dog = 'medium'       => 0100
                          and
-single = true        =>  0100
--------------            -----
+single = true        =>  1110
+=============        ========
 result               =>  0100
-=============
+
 Row with user_id=102 has to be retrieved as a result
 
 [user_id][ gender ][smoking][drinking][  dog  ][single]
