@@ -309,17 +309,17 @@ percent_selectivity = (15350 / 31591) * 100 = 48,59%
 
 Data structure:
  - `b-tree` (balanced tree) = is a tree which satisfies the following properties
-   - complexity: O(log n);
+   - complexity: O(log(n));
+   - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
    - consist of: root node, internal nodes and leaves;
    - the root node has at least 2 children unless it is a leaf;
    - the data in the index is sorted in ascending order;
    - every internal node has at least `(m/2)` children, at most `(m)` children;
    - all leaves are at the same depth from the root;
    - number of keys in an internal node `(m/2) − 1`;
-   - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
 
 B-tree history: were invented in Boeing Research Labs, for the purpose of efficiently managing index pages 
-for large random-access files because only small chunks of the tree could fit in main memory; \
+for large random-access files because the whole tree cannot be kept in main memory and only small chunks; \
 B-tree features: disk reads by blocks in 4Kb/8Kb, and this could be a page with nodes and key values; 
 data structure specially designed to work efficiently with disk memory and minimize input-output operations. \
 B-tree has fewer node transitions than a binary tree which reduces the number of disk access needed to search a key.
@@ -332,7 +332,6 @@ B-tree has fewer node transitions than a binary tree which reduces the number of
    ⌵        ⌵         ⌵           ⌵          ⌵          ⌵
 [5, 15] [25, 100] [175, 450]  [560, 590] [650, 775] [905, 1020]
 ```
-
 
  - `hash index` (hash table) = is an associative array (dictionary or map) that maps keys to values:
    - complexity: O(1);
@@ -353,9 +352,9 @@ index =     0    1   2     3    ... N
 value =  [drink][  ][  ][orange]...[  ]
 ```
 
-
  - `bitmap index` = is a technique for indexing scalar data
      - complexity: O(n);
+     - effective for operations: `=`;
      - bit is a basic unit of information (0/1 or No/Yes), 
      - fits into memory (mostly);
      - useful for complex select queries involving multiple conditions that can benefit from combining to bitmap;
@@ -430,11 +429,55 @@ Row with user_id=102 has to be retrieved as a result
    102   | man    | false   |  false  | medium | true |
 ```
 
-
- - `spatial grid index` = is a structure for organizing and searching for spatial objects in the appropriate grid cells; \
-   - complexity: ?;
+ - `spatial grid index` = is a structure for organizing and searching for spatial objects in the appropriate grid cells:
+   - complexity: O(n*log(n));
    - it can quickly identify close values in 2 or more dimensions;
-   - implementation: R-Tree index
+   - performs indexing the bounding boxes of the features instead of classic hierarchical tree index \
+     based on the values of the column being indexed;
+   - implementation: R-Tree (regions tree) index, Q-Tree (quadtree) index.
+
+Spatial grid index can help find an answer of question: - "Find all museums within 2 km of my current location". \
+`Point quadtree`: a portion of a two-dimensional space where each internal node is a square that is divided into exactly 4 equal children (nodes) \
+used to store information about points on a plane; `Key` expresses coordinates (x,y), `value` is a custom associated value (user id, location name, other)
+```
+                         1
+ |-----------|-----------|
+ |  .        |      .    |
+ |       .   |     .     |
+ |   .       |0,5      . |
+ |-----|-----|-----------|
+ | .   |0,25 | .         |
+ |--|--|-----|   .   .   |
+ |--|--|   . |   .       |
+ |--|--|-----|-----------|
+ 0
+ 
+ [user_id][  x  ][  y  ]
+   102    | 0.1  | 0.7
+   132    | 0.2  | 0.2
+   342    | 0.4  | 0.1
+```
+
+`R-Tree`: a balanced search tree data structures (like B-tree) for indexing multidimensional information such as geographical coordinates; \
+organizes the data in pages, and is designed for storage on disk; break up data into intersecting rectangles, and sub-rectangles, and sub-sub rectangles
+```
+     A
+     |-----------|
+     |  d       e|         C
+B    |       |---|---------|
+|----|--|    |   |        i|
+|    |  |  f |   |         |
+|g   |--|----|---|   j     |
+|       |    |-------------|
+|      h|
+|-------|
+
+     --------[A][B][C][ ]
+     |           |  |-----------
+     |           |             |
+     ⌵           ⌵             ⌵
+[d][e][f][ ]  [g][h][ ][ ]  [i][j][ ][ ]
+```
 
 
  - `reversed index` =
