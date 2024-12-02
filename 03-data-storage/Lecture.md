@@ -480,7 +480,87 @@ B    |       |---|---------|
 ```
 
 
- - `reversed index` =
+ - `reverse index` = is a B-Tree index literally reverse the bytes of the key value in the index to reduce block contention \
+   on sequence generated keys:
+     - complexity: O(n);
+     - 2 auto-increment index entries will end up in different b-tree index blocks;
+     - implementation: via functional index.
+
+Advantages: important in high volume transaction processing systems and speed up inserts. \
+Disadvantage: can't perform range scans because the index entries are scattered all over instead of being stored sequentially (in a classic B-Tree).
+```
+source   | reverse
+---------|---------
+0000 (0) | 0000 (0)
+0001 (1) | 1000 (8)
+0010 (2) | 0100 (4)
+0011 (3) | 1100 (12)
+0100 (4) | 0010 (2)
+0101 (5) | 1010 (10)
+0110 (6) | 0110 (6)
+0111 (7) | 1110 (14)
+1000 (8) | 0001 (1)
+1001 (9) | 1001 (9)
+1010 (10)| 0101 (5)
+
+
+source: 0,1,2,3,4,5,6,7,8,9,10
+       ----------[3]----------
+       |                     |
+       ⌵                     ⌵
+   ---[1]---        -------[5, 7]-------
+   |        |       |         |        |
+   ⌵        ⌵       ⌵         ⌵        ⌵
+  [0]      [2]     [4]       [6]    [8, 9, 10]
+
+
+reverse: 0,8,4,12,2,10,6,14,1,9,5
+    ---------[4,8,10]---------
+    |        |       |       |
+    ⌵        ⌵       ⌵       ⌵
+ [0,1,2]   [5, 6]   [9]   [12,14]
+```
+
+
+ - `inverted index` = is an index data structure mapping 'words' to its locations in a 'document' or a set of 'documents'; \
+   it is called an inverted index because it is simply an inversion of the forward index.
+     - implementation: form of a hash table or distributed hash table for large indices;
+     - widely used in search engines, database systems where efficient text search is required; \
+       useful for large collections of documents, where searching through all the documents would be prohibitively slow
+
+Advantages:
+- fast full-text searches;
+- can be compressed to reduce storage requirements.
+Disadvantages:
+- large storage overhead and high maintenance costs on updating/deleting/inserting;
+- the records are retrieved in the order in which they occur in the inverted lists instead of order of expected usefulness.
+
+The `forward index` stores a list of words for each document:
+```
+  id  | document
+----- |----------
+  0   |it is what it is
+  1   |what it is
+  2   |is is a banana  
+```
+
+The `inverted index` stores a list of the documents containing each word:
+```
+word  | document_ids
+----- |-------------
+  a   |  [2]   
+banana|  [2]   
+  is  | [0,1,2]
+  it  | [0,1,2]
+ what | [0,1  
+```
+
+Index takes a different approach, and it creates tokens from words.
+Example: "johnie" with 3 letter n-grams are:
+- joh,
+- ohn,
+- hni,
+- nie
 
 
  - `functional index` = 
