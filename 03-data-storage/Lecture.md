@@ -377,7 +377,9 @@ Dating site: select a man, non-smoker, non-drinker, has a medium dog, single
    103   | woman  | false   |  true   | big    | true |
    104   | woman  | false   |  true   | null   | false|
 
-CREATE INDEX idx_example ON table_name USING bitmap (column_name);  
+CREATE INDEX idx_example 
+ON table_name 
+USING bitmap (column_name);  
 
 gender value      Bitmap Index
 -------------     ------------
@@ -482,7 +484,7 @@ B    |       |---|---------|
 
  - `reverse index` = is a B-Tree index literally reverse the bytes of the key value in the index to reduce block contention \
    on sequence generated keys:
-     - complexity: O(n);
+     - complexity: O(log(n));
      - values from an auto-incrementing index will end up in different blocks of a b-tree index;
      - implementation: via functional index.
 
@@ -526,6 +528,7 @@ reverse: 0,8,4,12,2,10,6,14,1,9,5
 
  - `inverted index` = is an index data structure mapping 'words' to its locations in a 'document' or a set of 'documents'; \
    it is called an inverted index because it is simply an inversion of the forward index.
+     - complexity: O(1);
      - implementation: form of a hash table or distributed hash table for large indexes;
      - widely used in search engines, database systems where efficient text search is required; \
        useful for large collections of documents, where searching through all the documents would be prohibitively slow
@@ -574,9 +577,43 @@ Example: "johnie" with 3 letter n-grams are:
 - ohn,
 - hni,
 - nie
+```
+CREATE TABLE documents (
+    id BIGSERIAL PRIMARY KEY,
+    content TEXT,
+    column tsvector
+);
+
+CREATE INDEX documents_column_idx 
+ON documents 
+USING GIN (column);
+```
 
 
- - `functional index` = 
+ - `functional index` = is an index that is based on the result of a function applied to one or more columns in a table; \
+   allows to index values that are not stored directly in the table itself.
+     - complexity: depends on index data structure;
+     - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
+
+Example: you have a 'scorecard' of students by mathematics, physics, language, and you need find the top 10 students with the best average score. \
+Advantages: avoid performing unnecessary calculations in complex queries and full scans. \
+Disadvantages: index needs to be updated every time the table is modified (insert and update).
+```
+CREATE INDEX functional_idx
+ON table_name( ((physics + mathematics + language)/3) );
+
+EXPLAIN ANALYZE
+SELECT id, name, ((physics + mathematics + language)/3) as average_score
+FROM table_name
+ORDER BY average_score DESC
+LIMIT 10;
+         QUERY PLAN                     
+---------------------------
+ Limit  (cost=0.42..1.00 rows=10 width=22) (actual time=0.060..0.072 rows=10 loops=1)
+   ->  Index Scan Backward using functional_idx on table_name  (cost=0.42..57448.53 rows=1000005 width=22) (actual time=0.058..0.068 rows=10 loops=1)
+ Planning Time: 0.344 ms
+ Execution Time: 0.086 ms
+```
 
 
  - `sparse index` = 
