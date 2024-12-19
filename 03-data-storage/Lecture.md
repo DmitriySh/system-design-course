@@ -636,6 +636,17 @@ The `sparse index` contains an index record for not every search key value:
  - less overhead for insert/update operations because the index cover not all records;
  - reduces the number of I/O operations for certain types of requests;
  - records need to be clustered for efficient searching;
+```
+  -----------
+  |         |
+--|---------|-- index key = 100
+  |         |
+--|---------|-- index key = 200
+  |         |
+--|---------|-- index key = 300
+  |         |
+  -----------
+```
 
 
  - `include index` =
