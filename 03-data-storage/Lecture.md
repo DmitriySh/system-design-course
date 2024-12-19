@@ -528,8 +528,8 @@ reverse: 0,8,4,12,2,10,6,14,1,9,5
 
  - `inverted index` = is an index data structure mapping 'words' to its locations in a 'document' or a set of 'documents'; \
    it is called an inverted index because it is simply an inversion of the forward index.
-     - complexity: O(1);
-     - implementation: form of a hash table or distributed hash table for large indexes;
+     - complexity: depends on index data structure;
+     - implementation: it could be a form of a hash table or distributed hash table for large indexes;
      - widely used in search engines, database systems where efficient text search is required; \
        useful for large collections of documents, where searching through all the documents would be prohibitively slow
 
@@ -593,7 +593,7 @@ USING GIN (column);
  - `functional index` = is an index that is based on the result of a function applied to one or more columns in a table; \
    allows to index values that are not stored directly in the table itself.
      - complexity: depends on index data structure;
-     - effective for operations: `<`,   `<=`,   `=`,   `>=`,   `>`,   `like 'abc%'`
+     - effective for operations: depends on index data structure.
 
 Example: you have a 'scorecard' of students by mathematics, physics, language, and you need find the top 10 students with the best average score. \
 Advantages: avoid performing unnecessary calculations in complex queries and full scans. \
@@ -616,7 +616,26 @@ LIMIT 10;
 ```
 
 
- - `sparse index` = 
+ - `sparse index` = is an index that contains an index entry only for some records and not for all rows
+     - complexity: depends on index data structure;
+     - effective for operations: depends on index data structure;
+     - two different approaches to organizing and accessing data: **dense index** and **sparse index** \
+       depends on data operations;
+     - PostgreSQL doesn't support **sparse index** and use **partial index** instead.
+
+The `dense index` contains an index record for every search key value:
+ - quick access to records;
+ - effective for range searches since each key value has an entry;
+ - require a significant amount of storage space;
+ - slows down performance during insert/update operations because the index will be updated more frequently.
+
+The `sparse index` contains an index record for not every search key value:
+ - searching access may involve sequence scan if index key misses;
+ - might not be as effective for range queries;
+ - need less storage space;
+ - less overhead for insert/update operations because the index cover not all records;
+ - reduces the number of I/O operations for certain types of requests;
+ - records need to be clustered for efficient searching;
 
 
  - `include index` =
