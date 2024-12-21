@@ -534,11 +534,11 @@ reverse: 0,8,4,12,2,10,6,14,1,9,5
        useful for large collections of documents, where searching through all the documents would be prohibitively slow
 
 Advantages:
-- fast full-text searches;
-- can be compressed to reduce storage requirements.
+ - fast full-text searches;
+ - can be compressed to reduce storage requirements. \
 Disadvantages:
-- large storage overhead and high maintenance costs on updating/deleting/inserting;
-- the records are retrieved in the order in which they occur in the inverted lists instead of order of expected usefulness.
+ - large storage overhead and high maintenance costs on updating/deleting/inserting;
+ - the records are retrieved in the order in which they occur in the inverted lists instead of order of expected usefulness.
 
 The `forward index` stores a list of words for each document:
 ```
@@ -649,12 +649,41 @@ The `sparse index` contains an index record for not every search key value:
 ```
 
 
- - `include index` =
+ - `covering index` = is an index specifically designed to include necessary columns so that filtering use data \
+   within the index and without visiting the heap;
+     - complexity: depends on index data structure;
+     - effective for operations: depends on index data structure;
+     - include columns are just "payload" and are not part of the "search key";
+     - it's merely stored in the index and is not interpreted by the index machinery;
+     - speeding up queries with **index-only scans**;
+
+Advantages:
+ - queries can be executed faster;
+ - requires less memory to process the data;
+ - reduced loading on the disk subsystem;
+
+Disadvantages:
+ - large storage overhead;
+ - high maintenance costs to support "include fields" in the index;
+ - not all index types support covering indexes;
+```
+CREATE INDEX x_y_idx ON table_name(x) INCLUDE (y);
+
+SELECT y 
+FROM table_name 
+WHERE x = 'key';
+```
 
 
- - `cluster index` = 
+ - `cluster index` = is a database indexing technique that is used to physically arrange the data in a table \
+   based on the values of the clustered index key (ordering);
+     - complexity: depends on index data structure;
+     - effective for operations: depends on index data structure;
+     - table can have only one clustered index;
+     - if data is frequently added to the table, clustering indexing may not be the best choice.
 
-
+Advantages: database can more efficiently retrieve data by range (reducing disk I/O). \
+Disadvantages: database must reorganize the data to reflect every change.
 
 
 ## Transactions
