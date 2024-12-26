@@ -215,6 +215,7 @@ Examples:
 - need store and seek user's posts and use full-text search, and caching most popular posts --> **(search engine, column, key-value and relational databases)**
 
 
+
 ## Database characteristics
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) (Online Analytical Processing) = organizing the
 database characterized by long-time transactions and much more complex queries to huge amounts of data for the purpose of
@@ -577,7 +578,7 @@ Example: "johnie" with 3 letter n-grams are:
 - ohn,
 - hni,
 - nie
-```
+```sql
 CREATE TABLE documents (
     id BIGSERIAL PRIMARY KEY,
     content TEXT,
@@ -598,7 +599,7 @@ USING GIN (column);
 Example: you have a 'scorecard' of students by mathematics, physics, language, and you need find the top 10 students with the best average score. \
 Advantages: avoid performing unnecessary calculations in complex queries and full scans. \
 Disadvantages: index needs to be updated every time the table is modified (insert and update).
-```
+```sql
 CREATE INDEX functional_idx
 ON table_name( ((physics + mathematics + language)/3) );
 
@@ -666,7 +667,7 @@ Disadvantages:
  - large storage overhead;
  - high maintenance costs to support "include fields" in the index;
  - not all index types support covering indexes;
-```
+```sql
 CREATE INDEX x_y_idx ON table_name(x) INCLUDE (y);
 
 SELECT y 
@@ -686,8 +687,71 @@ Advantages: database can more efficiently retrieve data by range (reducing disk 
 Disadvantages: database must reorganize the data to reflect every change.
 
 
+
+## Additional features
+ - `Stored procedure` = is a group of SQL queries that can be saved and reused multiple times
+```sql
+CREATE OR REPLACE PROCEDURE select_expensive_products(price_threshold double precision)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    product_record products%ROWTYPE;
+BEGIN
+    -- Check precision
+    IF price_threshold > 0 THEN
+        FOR product_record IN 
+            SELECT * FROM products WHERE price > price_threshold
+        LOOP
+            RAISE NOTICE 'Found product: %, price: %', product_record.name, product_record.price;
+        END LOOP;
+    ELSE
+        RAISE NOTICE 'The price_threshold variable should not be negative or zero.';
+    END IF;
+END
+$$;
+
+-- Invoke procedure
+CALL select_expensive_products(100.0);
+```
+
+ - `Trigger` = is a special type of stored procedure that automatically executes or fires when certain events occur in a database:
+   - can be executed before/after any INSERT, UPDATE, or DELETE operation
+   - can be executed instead of INSERT, UPDATE, or DELETE operations
+   - works in the same transaction that the sql statement
+   - have access to an old and new row set
+   - can be attached to tables, views, and foreign tables
+```sql
+CREATE OR REPLACE FUNCTION before_update_salary()
+RETURNS TRIGGER AS $$
+BEGIN
+ -- Check the growth of the new salary value
+ IF NEW.salary > OLD.salary THEN
+     -- Insert new row into salary_history table
+     INSERT INTO salary_history (employee_id, OLD.salary, NEW.salary)
+     VALUES (OLD.id, OLD.salary, NEW.salary);
+ END IF;
+
+ -- Return new row
+ RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Register trigger (before update)
+CREATE TRIGGER increase_salary
+    BEFORE UPDATE ON employees
+    FOR EACH ROW
+    EXECUTE FUNCTION before_update_salary();
+```
+
+ - `View`
+
+ - `Materialized view`
+
+
 ## Transactions
 
+
 ## Message brokers
+
 
 ## Patterns of data storage and delivery data
