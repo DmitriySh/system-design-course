@@ -689,7 +689,12 @@ Disadvantages: database must reorganize the data to reflect every change.
 
 
 ## Additional features
- - `Stored procedure` = is a group of SQL queries that can be saved and reused multiple times
+ - `Stored procedure` = is a group of SQL queries that can be saved and reused multiple times:
+   - can be implemented in a variety of programming languages (PL/pgSQL, SQL/PSM, Java, C and others);
+   - it is compiled, stored in the database and is close to the data, which is highly efficient;
+   - typically includes flow control statements: IF, WHILE, LOOP, REPEAT and CASE;
+   - can receive variables, declare variables and return result sets;
+   - works in the same transaction that the sql statement;
 ```sql
 CREATE OR REPLACE PROCEDURE select_expensive_products(price_threshold double precision)
 LANGUAGE plpgsql
@@ -715,11 +720,10 @@ CALL select_expensive_products(100.0);
 ```
 
  - `Trigger` = is a special type of stored procedure that automatically executes or fires when certain events occur in a database:
-   - can be executed before/after any INSERT, UPDATE, or DELETE operation
-   - can be executed instead of INSERT, UPDATE, or DELETE operations
-   - works in the same transaction that the sql statement
-   - have access to an old and new row set
-   - can be attached to tables, views, and foreign tables
+   - can be executed before/after any INSERT, UPDATE, or DELETE operation;
+   - can be executed instead of INSERT, UPDATE, or DELETE operations;
+   - have access to an old and new row set;
+   - can be attached to tables, views, and foreign tables.
 ```sql
 CREATE OR REPLACE FUNCTION before_update_salary()
 RETURNS TRIGGER AS $$
