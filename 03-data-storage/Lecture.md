@@ -719,6 +719,7 @@ $$;
 CALL select_expensive_products(100.0);
 ```
 
+
  - `Trigger` = is a special type of stored procedure that automatically executes or fires when certain events occur in a database:
    - can be executed before/after any INSERT, UPDATE, or DELETE operation;
    - can be executed instead of INSERT, UPDATE, or DELETE operations;
@@ -747,10 +748,38 @@ CREATE TRIGGER increase_salary
     EXECUTE FUNCTION before_update_salary();
 ```
 
- - `View`
 
- - `Materialized view`
+ - `View` = is not a physically materialized result table of a query:
+   - alias for a query;
+   - helps to hide the complexity of the original query;
+   - data is not updatable.
+```sql
+CREATE VIEW books_count AS
+SELECT book_id, title, sum(quantity) 
+FROM books as b, book_copies as bc
+WHERE b.book_id = bc.book_id
+GROUP BY b.book_id;
 
+-- Invoke view
+SELECT * FROM books_count;
+```
+
+ - `Materialized view` = is a physically materialized result table of a query:
+   - remembers the query used to initialize the view, so that it can be refreshed later upon demand;
+   - data can be auto-updatable.
+```sql
+CREATE MATERIALIZED VIEW books_count AS
+SELECT book_id, title, sum(quantity) 
+FROM books as b, book_copies as bc
+WHERE b.book_id = bc.book_id
+GROUP BY b.book_id;
+
+-- Invoke view
+SELECT * FROM books_count;
+
+-- Refresh the materialized view data
+REFRESH MATERIALIZED VIEW your_view_name;
+```
 
 ## Transactions
 
