@@ -803,11 +803,11 @@ ACID - properties describe the major guarantees of the transaction paradigm even
      - `2 phase locking` (2pl) = ?
      - `multiversion concurrency control` (mvcc) = ?
 ```
-                  lost update | dirty read | non-repeatable read | phantom reads | other
-Read Uncommitted       -            +                +                   +           +
-Read Committed         -            -                +                   +           +
-Repeatable Read        -            -                -                   +           +
-Serializable           -            -                -                   -           -
+                  lost update | dirty read | non-repeatable read | phantom reads | other anomalies
+Read Uncommitted       -            +                +                   +                +
+Read Committed         -            -                +                   +                +
+Repeatable Read        -            -                -                   +                +
+Serializable           -            -                -                   -                -
 ```
  - `durability` = guarantees that once a transaction has been committed, it will remain committed even in the case of a system failure.
 
