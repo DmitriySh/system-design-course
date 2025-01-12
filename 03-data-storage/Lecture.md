@@ -753,6 +753,7 @@ CREATE TRIGGER increase_salary
    - alias for a query;
    - helps to hide the complexity of the original query;
    - data is not updatable.
+   - examples: RDBMS, MongoDB
 ```sql
 CREATE VIEW books_count AS
 SELECT book_id, title, sum(quantity) 
@@ -767,6 +768,7 @@ SELECT * FROM books_count;
  - `Materialized view` = is a physically materialized result table of a query:
    - remembers the query used to initialize the view, so that it can be refreshed later upon demand;
    - data can be auto-updatable.
+   - examples: RDBMS, MongoDB, Cassandra
 ```sql
 CREATE MATERIALIZED VIEW books_count AS
 SELECT book_id, title, sum(quantity) 
@@ -778,10 +780,37 @@ GROUP BY b.book_id;
 SELECT * FROM books_count;
 
 -- Refresh the materialized view data
-REFRESH MATERIALIZED VIEW your_view_name;
+REFRESH MATERIALIZED VIEW books_count;
 ```
 
+
+ - `Watch API` = is an event-based interface for asynchronously monitoring of data changes or special events happen:
+   - examples: etcd3, Elasticsearch
+
 ## Transactions
+ACID - properties describe the major guarantees of the transaction paradigm even in the event of errors, power failures, etc.
+ - `atomicity` = guarantees that each transaction is treated as a single "unit", which either succeeds completely, or fails completely;
+ - `consistency` = ensures that a transaction can only bring the database from one valid state to another, prevents database corruption after an illegal transaction; \
+   constraints: 
+   - not null value, 
+   - unique value, 
+   - primary/foreign key, 
+   - check condition for value, 
+   - default value;
+ - `isolation` levels = ensure that transactions can execute concurrently and don't interfere with each other to read, write data:
+   - if higher the transaction isolation level, than lower the database throughput;
+   - isolation resolution methods:
+     - `2 phase locking` (2pl) = ?
+     - `multiversion concurrency control` (mvcc) = ?
+```
+                  lost update | dirty read | non-repeatable read | phantom reads | other
+Read Uncommitted       -            +                +                   +           +
+Read Committed         -            -                +                   +           +
+Repeatable Read        -            -                -                   +           +
+Serializable           -            -                -                   -           -
+```
+ - `durability` = guarantees that once a transaction has been committed, it will remain committed even in the case of a system failure.
+
 
 
 ## Message brokers
