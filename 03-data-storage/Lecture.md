@@ -787,6 +787,7 @@ REFRESH MATERIALIZED VIEW books_count;
  - `Watch API` = is an event-based interface for asynchronously monitoring of data changes or special events happen:
    - examples: etcd3, Elasticsearch
 
+
 ## Transactions
 ACID - properties describe the major guarantees of the transaction paradigm even in the event of errors, power failures, etc.
  - `atomicity` = guarantees that each transaction is treated as a single "unit", which either succeeds completely, or fails completely;
@@ -800,8 +801,8 @@ ACID - properties describe the major guarantees of the transaction paradigm even
  - `isolation` levels = ensure that transactions can execute concurrently and don't interfere with each other to read, write data:
    - if higher the transaction isolation level, than lower the database throughput;
    - isolation resolution methods:
-     - `2 phase locking` (2pl) = ?
-     - `multiversion concurrency control` (mvcc) = ?
+     - `2 phase locking` (2pl) = locks applied to data to prevent concurrency access to data from different transactions (growing and shrinking phases);
+     - `multiversion concurrency control` (mvcc) = data snapshots to prevent concurrency access to data from different transactions (fields xmin, xmax).
 ```
                   lost update | dirty read | non-repeatable read | phantom reads | other anomalies
 Read Uncommitted       -            +                +                   +                +
@@ -809,8 +810,11 @@ Read Committed         -            -                +                   +      
 Repeatable Read        -            -                -                   +                +
 Serializable           -            -                -                   -                -
 ```
- - `durability` = guarantees that once a transaction has been committed, it will remain committed even in the case of a system failure.
+ - `durability` = guarantees that once a transaction has been committed, it will remain committed even in the case of a system failure:
+   - write-ahead log (wal): changes must first be logged (client has been released) and only then written to data files (in the background)
 
+
+BASE - ?
 
 
 ## Message brokers
