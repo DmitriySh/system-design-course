@@ -789,7 +789,7 @@ REFRESH MATERIALIZED VIEW books_count;
 
 
 ## Transactions
-ACID - properties describe the major guarantees of the transaction paradigm even in the event of errors, power failures, etc.
+**ACID** - properties describe the major guarantees of transactional paradigms in relational databases even in the event of errors, power failures, etc.
  - `atomicity` = guarantees that each transaction is treated as a single "unit", which either succeeds completely, or fails completely;
  - `consistency` = ensures that a transaction can only bring the database from one valid state to another, prevents database corruption after an illegal transaction; \
    constraints: 
@@ -799,7 +799,7 @@ ACID - properties describe the major guarantees of the transaction paradigm even
    - check condition for value, 
    - default value;
  - `isolation` levels = ensure that transactions can execute concurrently and don't interfere with each other to read, write data:
-   - if higher the transaction isolation level, than lower the database throughput;
+   - if higher↑ the transaction isolation level, then lower↓ the database throughput;
    - isolation resolution methods:
      - `2 phase locking` (2pl) = locks applied to data to prevent concurrency access to data from different transactions (growing and shrinking phases);
      - `multiversion concurrency control` (mvcc) = data snapshots to prevent concurrency access to data from different transactions (fields xmin, xmax).
@@ -814,7 +814,16 @@ Serializable           -            -                -                   -      
    - write-ahead log (wal): changes must first be logged (client has been released) and only then written to data files (in the background)
 
 
-BASE - ?
+**BASE** - properties describe the approach to work in the distributed database system; eliminating guarantees of isolation, 
+atomicity and durability for higher performance:
+- `basically available` = database system should always be available to respond to user requests, even if it cannot guarantee 
+  immediate access to all data;
+- `soft state` = the data may be temporarily inconsistent, in the process of being changing or updating.
+- `eventual consistency` = the database should eventually converge to a consistent state, even if it takes some time 
+  for all updates to propagate and be reflected in the data.
+
+BASE databases are used in modern, highly-available, and scalable systems that handle large amounts of data. \
+Examples: online shopping websites, social media platforms, and cloud-based services.
 
 
 ## Message brokers
