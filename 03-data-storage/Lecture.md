@@ -827,6 +827,19 @@ Examples: online shopping websites, social media platforms, and cloud-based serv
 
 
 ## Message brokers
+`Message broker` = is a software component that mediates between components (services) of a distributed system:
+ - asynchronous communication
+ - weak coupling
+ - scalability
+ - fault tolerance
+ - data flows
+```
+ -------------                 -------------
+ | Service A | --> [QUEUE] --> | Service B |
+ -------------                 -------------
+```
+
+
 
 
 ## Patterns of data storage and delivery data
